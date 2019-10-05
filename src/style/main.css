@@ -1,0 +1,15 @@
+@import '~antd/dist/antd.css';
+
+.max-height {
+    height: 1000px;
+    background-color: hotpink;
+}
+
+.logo-main {
+    height: 64px;
+    background-color: #c2e1ff;
+}
+
+.pq {
+    float: right;
+}

@@ -3,8 +3,7 @@ import {
     Layout,
     Menu,
     Icon,
-    Button,
-    Dropdown
+    Button
 } from "antd";
 import "../style/main.css";
 import { Route, Link } from "react-router-dom";
@@ -20,19 +19,19 @@ export default class Main extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            collapsed: false,
             active: "/main"
         };
     };
 
-    collapseSideBar = () => {
-        this.setState({
-            collapsed: !this.state.collapsed
-        });
-    };
-
     testMenu = evt => {
         // console.log(evt);
+    };
+
+    componentDidMount() {
+        const { location } = this.props;
+        this.setState({
+            active: location.pathname
+        });
     };
 
     componentDidUpdate(prevProps) {
@@ -46,70 +45,44 @@ export default class Main extends Component {
 
     render() {
         const { Header, Sider, Content } = Layout;
-        const { collapsed, active } = this.state;
+        const { active } = this.state;
         const { location } = this.props;
-        const menu = (
-            <Menu onClick={this.testMenu}>
-                <Menu.Item key="1">
-                    <Icon type="setting" />
-                    Pengaturan
-                </Menu.Item>
-                <Menu.Item key="2">
-                    <Icon type="user" />
-                    Profil
-                </Menu.Item>
-                <Menu.Divider />
-                <Menu.Item key="3">
-                    <Icon type="logout" />
-                    Logout
-                </Menu.Item>
-            </Menu>
-        );
         return (
             <Layout>
-                <Sider
-                    style={{ backgroundColor: MAIN_COLOR }}
-                    breakpoint={"sm"}
-                    collapsed={collapsed}
-                    className="max-height"
-                >
-                    <div className="logo-main"></div>
-                    <Menu defaultSelectedKeys={[location.pathname]} selectedKeys={[active]} onClick={this.testMenu} mode="inline" theme="light" >
-                        <Menu.Item key="/main">
-                            <Link to="/main">
-                                <Icon type="dashboard"/>
-                                <span>Dashboard</span>
-                            </Link>
-                        </Menu.Item>
-                        <Menu.Item key="/main/customer">
-                            <Link to="/main/customer">
-                                <Icon type="user" />
-                                <span>Konsumen</span>
-                            </Link>
-                        </Menu.Item>
-                        <Menu.Item key="/main/statistic">
-                            <Link to="/main/statistic">
-                                <Icon type="line-chart" />
-                                <span>Statistik</span>
-                            </Link>
-                        </Menu.Item>
-                    </Menu>
-                </Sider>
+                <Header style={{ backgroundColor: MAIN_COLOR, position: 'fixed', width: '100%' }}>
+                    <div className="float-right-group">
+                        <Button type="primary" icon="user"> Akun </Button>
+                        <Button type="primary" icon="setting"> Pengaturan </Button>
+                        <Button type="primary" icon="logout"> Logout </Button>
+                    </div>
+                </Header>
                 <Layout>
-                    <Header style={{ backgroundColor: MAIN_COLOR }}>
-                        <Button onClick={this.collapseSideBar} style={{ marginBottom: 16 }} >
-                            <Icon type={collapsed ? "menu-unfold" : "menu-fold"} />
-                        </Button>
-                        <div className="pq">
-                            <Dropdown trigger={["click"]} overlay={menu} placement="bottomRight" >
-                                <Button type="primary" icon="user">
-                                    Akun
-                                </Button>
-                            </Dropdown>
-                        </div>
-                    </Header>
+                    <Sider style={{ backgroundColor: MAIN_COLOR, position: 'fixed' }} breakpoint={"sm"} className="max-height" >
+                        <div className="logo-main"></div>
+                        <Menu defaultSelectedKeys={[location.pathname]} selectedKeys={[active]} onClick={this.testMenu} mode="inline" theme="light" >
+                            <Menu.Item key="/main">
+                                <Link to="/main">
+                                    <Icon type="dashboard"/>
+                                    <span>Dashboard</span>
+                                </Link>
+                            </Menu.Item>
+                            <Menu.Item key="/main/customer">
+                                <Link to="/main/customer">
+                                    <Icon type="user" />
+                                    <span>Konsumen</span>
+                                </Link>
+                            </Menu.Item>
+                            <Menu.Item key="/main/statistic">
+                                <Link to="/main/statistic">
+                                    <Icon type="line-chart" />
+                                    <span>Statistik</span>
+                                </Link>
+                            </Menu.Item>
+                        </Menu>
+                    </Sider>
                     <Content>
-                        <div className="main-wrap">
+                        AFK
+                        <div className="content-fill">
                             <AnimatedSwitch
                                 atEnter={{ opacity: 0 }}
                                 atLeave={{ opacity: 0 }}

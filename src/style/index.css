@@ -1,0 +1,57 @@
+@import '~antd/dist/antd.css';
+
+.fixed-header {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    display: block;
+    z-index: 2;
+}
+
+.main-menu {
+    padding: 10px 50px;
+    background-color: #1890ff;
+}
+
+.main-menu::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+.main-menu > li {
+    color: white;
+    list-style: none;
+    cursor: pointer;
+    letter-spacing: 0.8px;
+    text-decoration-line: none;
+    float: right;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.o-content-wrapper::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+.o-content-wrapper {
+    margin-top: 54px;
+    background-color: lime;
+    height: 100%;
+    overflow: auto;
+    margin-left: 200px;
+}
+
+.o-sider {
+    width: 200px;
+    height: 1000px;
+    position: fixed;
+    background-color: #1890ff
+}
+
+.switch-wrapper > div {
+    position: absolute;
+}

@@ -10,18 +10,18 @@
     background-color: #c2e1ff;
 }
 
-.pq {
+.float-right-group {
     float: right;
 }
-
-.main-wrap {
-    padding: 10px;
-    height: 100%;
-}
-
 
 .switch-wrapper > div {
   position: absolute;
 }
 
-
+.content-fill {
+    background-color: hotpink;
+    height: 100%;
+    width: 100%;
+    margin-top: 200px;
+    padding-left: 200px;
+}

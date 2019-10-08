@@ -1,5 +1,9 @@
 @import '~antd/dist/antd.css';
 
+body {
+    background-color: #f2f2f2;
+}
+
 .fixed-header {
     position: fixed;
     width: 100%;
@@ -31,27 +35,30 @@
     font-size: 14px;
 }
 
-.o-content-wrapper::after {
-    content: "";
-    clear: both;
-    display: table;
-}
-
 .o-content-wrapper {
     margin-top: 54px;
-    background-color: lime;
-    height: 100%;
-    overflow: auto;
     margin-left: 200px;
 }
 
 .o-sider {
     width: 200px;
-    height: 1000px;
     position: fixed;
-    background-color: #1890ff
+    background-color: #1890ff;
+    height: 100%;
+    z-index: 3;
+    top: 54px;
 }
 
 .switch-wrapper > div {
     position: absolute;
+    width: 100%;
+}
+
+@media(max-width: 767px) {
+    .main-menu {
+        display: none;
+    }
+    .o-sider {
+        display: none;
+    }
 }

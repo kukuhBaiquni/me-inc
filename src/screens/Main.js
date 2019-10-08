@@ -14,14 +14,14 @@ export default class Main extends Component {
         this.state = {
             active: "/main"
         };
-    }
+    };
 
     componentDidMount() {
         const { location } = this.props;
         this.setState({
             active: location.pathname
         });
-    }
+    };
 
     componentDidUpdate(prevProps) {
         const { location } = this.props;
@@ -30,7 +30,7 @@ export default class Main extends Component {
                 active: location.pathname
             });
         }
-    }
+    };
 
     render() {
         const { location } = this.props;
@@ -40,24 +40,24 @@ export default class Main extends Component {
                 <div className="fixed-header">
                     <ul className="main-menu">
                         <li>
-                            <Button type="primary" icon="user"> Akun </Button>
+                            <Button type="primary" icon="logout"> Logout </Button>
                         </li>
                         <li>
                             <Button type="primary" icon="setting"> Pengaturan </Button>
                         </li>
                         <li>
-                            <Button type="primary" icon="logout"> Logout </Button>
+                            <Button type="primary" icon="user"> Akun </Button>
                         </li>
                     </ul>
                 </div>
                 <div className="o-sider">
-                    <Menu
-                        defaultSelectedKeys={[location.pathname]}
-                        selectedKeys={[active]}
-                        onClick={this.testMenu}
-                        mode="inline"
-                        theme="light"
-                    >
+                    <Menu defaultSelectedKeys={[location.pathname]} selectedKeys={[active]} onClick={this.testMenu} mode="inline" theme="light" >
+                        <Menu.Item key="/main/statistic">
+                            <Link to="/main/statistic">
+                                <Icon type="laptop" />
+                                <span>POS</span>
+                            </Link>
+                        </Menu.Item>
                         <Menu.Item key="/main">
                             <Link to="/main">
                                 <Icon type="dashboard" />
@@ -78,14 +78,12 @@ export default class Main extends Component {
                         </Menu.Item>
                     </Menu>
                 </div>
-                <div className="o-content-wrapper">
-                    <AnimatedSwitch atEnter={{ opacity: 0 }} atLeave={{ opacity: 0 }} atActive={{ opacity: 1 }} className="switch-wrapper" >
-                        <Route path="/main/statistic" component={StatisticPage} />
-                        <Route path="/main/customer" component={Customer} />
-                        <Route path="/main" component={Dashboard} />
-                    </AnimatedSwitch>
-                </div>
+                <AnimatedSwitch atEnter={{ opacity: 0 }} atLeave={{ opacity: 0 }} atActive={{ opacity: 1 }} className="switch-wrapper" >
+                    <Route path="/main/statistic" component={StatisticPage} />
+                    <Route path="/main/customer" component={Customer} />
+                    <Route path="/main" component={Dashboard} />
+                </AnimatedSwitch>
             </>
         );
     }
-}
+};

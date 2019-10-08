@@ -70,7 +70,7 @@ export default class Main extends Component {
                                 <span>Konsumen</span>
                             </Link>
                         </Menu.Item>
-                        <Menu.Item key="/main/statistic">
+                        <Menu.Item key="/main/pos">
                             <Link to="/main/statistic">
                                 <Icon type="line-chart" />
                                 <span>Statistik</span>

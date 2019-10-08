@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import "../style/menu.css";
-import { Row, Col, Icon, Dropdown, Typography, Menu } from 'antd';
+import { Row, Col, Icon, Dropdown, Menu } from 'antd';
+import {
+  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
+} from 'recharts';
 
 const statisticLooper = [
     {icon: "shopping-cart", title: "TRANSAKSI", value: "47"},
@@ -12,7 +15,6 @@ const statisticLooper = [
 
 export default class Dashboard extends Component {
     render() {
-        const { Title, Text } = Typography;
         const menu = (
             <Menu>
                 <Menu.Item key="0">
@@ -23,17 +25,17 @@ export default class Dashboard extends Component {
         return (
             <div className="view-container">
                 DASHBOARD
-                <Title level={3}>Statistic Overview</Title>
-                <Row type="flex" justify="space-between" style={{marginTop: "10px"}}>
+                <h2>Statistic Overview</h2>
+                <Row type="flex" justify="space-between" style={{marginTop: "10px", marginBottom: "10px"}}>
                     {
                         statisticLooper.map((widget, index) => {
                             return(
                                 <Col key={index} md={4}>
-                                    <Row className="o-widget-box mv-bg" type="flex" justify="start" align="top">
+                                    <Row className="o-widget-box" type="flex" justify="start" align="top">
                                         <Col span={24}>
                                             <Row type="flex">                                            
                                                 <Col span={22}>
-                                                    <Text>{widget.title}</Text>
+                                                    <span>{widget.title}</span>
                                                 </Col>
                                                 <Col span={2}>
                                                     <Dropdown overlay={menu} trigger={["click"]}>
@@ -62,7 +64,31 @@ export default class Dashboard extends Component {
                         })
                     }
                 </Row>
+                <h2>Graphic Overview</h2>
+                <Row className="o-widget-box" style={{marginTop: "10px", paddingTop: "30px", paddingLeft: "0"}}>
+                    <div style={{width: "100%", height: 400}}>
+                        <ResponsiveContainer>
+                            <BarChart
+                                data={data}
+                                margin={{
+                                top: 5, right: 30, left: 20, bottom: 5,
+                                }}
+                            >
+                                <CartesianGrid strokeDasharray="3 3" />
+                                <XAxis dataKey="name" />
+                                <YAxis />
+                                <Tooltip />
+                                <Bar name="Hari Ini" dataKey="current" fill="#1890ff" />
+                                <Bar name="Bulan Lalu" dataKey="past" fill="#4d2e9b" />
+                            </BarChart>
+                        </ResponsiveContainer>
+                    </div>
+                </Row>
             </div>
         )
     }
 };
+
+let data = [];
+Array(31).fill('Gabon').map((x, i) => data.push({name: `Day ${i+1}`, current: Number(`${Math.ceil(Math.random() * 100)}`), past: Number(`${Math.ceil(Math.random() * 100)}`),  amt: 100}));
+

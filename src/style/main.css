@@ -24,19 +24,4 @@
   position: absolute;
 }
 
-.tjurut {
-    background-color: hotpink;
-    border-right: 4px solid pink;
-}
 
-a {
-    color: orange;
-}
-
-a:active {
-    color: hotpink;
-}
-
-a:active {
-    background-color: hotpink;
-}

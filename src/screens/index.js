@@ -21,13 +21,9 @@ export default class Main extends Component {
         super(props);
         this.state = {
             collapsed: false,
-            active: 0
+            active: "/main"
         };
     };
-
-    componentDidMount() {
-        console.log('mounted')
-    }
 
     collapseSideBar = () => {
         this.setState({
@@ -39,10 +35,19 @@ export default class Main extends Component {
         // console.log(evt);
     };
 
+    componentDidUpdate(prevProps) {
+        const { location } = this.props;
+        if (location.pathname !== prevProps.location.pathname) {
+            this.setState({
+                active: location.pathname
+            });
+        }
+    };
+
     render() {
         const { Header, Sider, Content } = Layout;
-        const { collapsed } = this.state;
-        console.log('re re re')
+        const { collapsed, active } = this.state;
+        const { location } = this.props;
         const menu = (
             <Menu onClick={this.testMenu}>
                 <Menu.Item key="1">
@@ -69,20 +74,20 @@ export default class Main extends Component {
                     className="max-height"
                 >
                     <div className="logo-main"></div>
-                    <Menu defaultSelectedKeys={["1"]} onClick={this.testMenu} mode="inline" theme="light" >
-                        <Menu.Item key="1">
+                    <Menu defaultSelectedKeys={[location.pathname]} selectedKeys={[active]} onClick={this.testMenu} mode="inline" theme="light" >
+                        <Menu.Item key="/main">
                             <Link to="/main">
                                 <Icon type="dashboard"/>
                                 <span>Dashboard</span>
                             </Link>
                         </Menu.Item>
-                        <Menu.Item key="2">
+                        <Menu.Item key="/main/customer">
                             <Link to="/main/customer">
                                 <Icon type="user" />
                                 <span>Konsumen</span>
                             </Link>
                         </Menu.Item>
-                        <Menu.Item key="3">
+                        <Menu.Item key="/main/statistic">
                             <Link to="/main/statistic">
                                 <Icon type="line-chart" />
                                 <span>Statistik</span>

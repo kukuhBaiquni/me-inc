@@ -6,12 +6,13 @@ const uriTarget = 'https://kayak.co.id/hotels/Bandung,West-Java,Indonesia/2019-1
 const wiki = 'https://en.wikipedia.org/wiki/Grayscale';
 const saver = 'https://cors-escape.herokuapp.com/';
 const hero = 'https://cors-anywhere.herokuapp.com/';
-const elwiki = 'https://elwiki.net/';
+const elwiki = 'https://elwiki.net/w/Sharp_Fall';
 const booking = "https://www.booking.com/";
+const newTarget = 'https://www.kayak.co.id/hotels/Sheraton-Bandung-Hotel--Towers,Bandung-c18593-h6918-details/2019-11-07/2019-11-17/1adults?sid=EDFETgdSFz';
 
 const Scrap = async () => {
     try {
-        const response = await axios.get(hero + booking);
+        const response = await axios.get(hero + elwiki);
         // const $ = cheerio.load(response.data);
         // const child = $('.mw-parser-output').children('div:first-child').text();
         // console.log(child);

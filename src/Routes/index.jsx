@@ -1,13 +1,9 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import Authorization from '../../Helpers/Authorization';
+import Authorization from '../helpers/Authorization';
 
-import Header from '../Common/Header';
-import Footer from '../Common/Footer';
+import Header from '../components/layout/Header';
 
-/**
- * If we have a logged-in user, redirect to the home page. Otherwise, display the component.
- */
 const Routes = ({
   component: Component,
   private: isPrivate,
@@ -23,13 +19,11 @@ const Routes = ({
             <>
               {isLoggedIn ? <Header /> : null}
               <Component path={'/'} {...rest} />
-              {isLoggedIn ? <Footer /> : null}
             </>
           ) : (
             <>
               {isLoggedIn ? <Header /> : null}
               <Redirect to={'/'} noThrow {...rest} />
-              {isLoggedIn ? <Footer /> : null}
             </>
           )}
         </>
@@ -41,13 +35,11 @@ const Routes = ({
             <>
               {isLoggedIn ? <Header /> : null}
               <Redirect to={'/'} noThrow {...rest} />
-              {isLoggedIn ? <Footer /> : null}
             </>
           ) : (
             <>
               {isLoggedIn ? <Header /> : null}
               <Component path={path} {...rest} />
-              {isLoggedIn ? <Footer /> : null}
             </>
           )}
         </>

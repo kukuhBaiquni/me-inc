@@ -1,0 +1,60 @@
+@import "../../assets/variable.scss";
+
+body {
+    background-color: $dark;
+}
+
+.view-container {
+    width: calc(100% - 200px);
+    margin: auto;
+    overflow-x: hidden;
+    padding: 24px 36px;
+    padding-top: 100px;
+    color: white;
+    font-family: $regular;
+    // font-size: 24px;
+    h2 {
+        font-size: 26px;
+        font-family: $bold;
+        color: white
+    }
+    .o-widget-box {
+        background-color: $primary;
+        /* box-shadow: 4px 4px 4px 1px rgba(0,0,0,0.16); */
+        border-radius: 4px;
+        padding: 20px;
+        margin-bottom: 20px;
+        .icon-box {
+            font-size: 38px;
+            color: white;
+        }
+        .rrc {
+            font-size: 16px;
+            font-family: $light;
+            color: white;
+        }
+        p {
+            font-family: $light;
+            color: white;
+            font-size: 16px;
+        }
+        b {
+            font-family: $bold;
+            font-size: 16px;
+            color: white;
+        }
+        .o-statistic-value {
+            font-size: 24px;
+            margin-left: 20px;
+            font-family: $bold;
+            color: white;
+        }
+        .o-graphic-container {
+            width: 100%;
+            height: 440px;
+            padding: 30px 0;
+        }
+    }
+    .o-full-width { width: 100% }
+}
+

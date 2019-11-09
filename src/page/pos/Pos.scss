@@ -1,0 +1,45 @@
+@import "../../assets/variable.scss";
+
+body {
+    background-color: $dark;
+}
+
+.pos-main {
+    padding-top: 70px;
+    height: 100%;
+    .content-wrapper {
+        padding-top: 50px;
+        margin: auto;
+        width: 70%;
+        font-size: 22px;
+        color: white;
+        font-family: $bold;
+        table {
+            margin-top: 15px;
+        }
+        th {
+            color: white;
+            background-color: $primary;
+            font-family: $bold;
+            font-size: 20px;
+            text-align: center;
+        }
+        tr {
+            text-align: center;
+            color: white;
+            font-family: $regular;
+            font-size: 18px;
+            cursor: pointer;
+        }
+        .filter-box {
+            height: 180px;
+            background-color: $primary;
+            border-radius: 5px;
+            color: $dark;
+            padding: 8px 18px;
+            font-family: $regular;
+            font-size: 18px;
+            width: 300px
+        }
+    }
+}

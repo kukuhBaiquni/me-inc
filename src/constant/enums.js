@@ -2,7 +2,7 @@ export const menu = [
     {
         title: "Overview",
         icon: "desktop",
-        path: "",
+        path: "/overview",
         description: "Di halaman ini Anda dapat melihat rangkuman statistik (penjualan, sisa stok produk, pendapatan, dll) untuk hari ini."
     },
     {
@@ -23,9 +23,9 @@ export const menu = [
         path: ""
     },
     {
-        title: "Point of Service",
+        title: "Point of Sales",
         icon: "calculator",
-        path: "",
+        path: "/pos",
         description: "Halaman ini khusus untuk melakukan transaksi."
     },
     {

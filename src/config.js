@@ -15,6 +15,19 @@ export const setMetaDescription = description => {
 
 export const ROUTE = [
   {
+    private: false,
+    path: "/",
+    exact: true,
+    meta: {
+      title: siteTitle,
+      description: siteMetaDescription
+    },
+    component: Loadable({
+      loader: () => import("./page/dashboard/Dashboard"),
+      loading: () => <div>Loading..</div>
+    })
+  },
+  {
     private: true,
     path: "/dashboard",
     exact: true,
@@ -27,17 +40,29 @@ export const ROUTE = [
       loading: () => <div>Loading..</div>
     })
   },
-
   {
-    private: false,
-    path: "/",
+    private: true,
+    path: "/overview",
     exact: true,
     meta: {
       title: siteTitle,
       description: siteMetaDescription
     },
     component: Loadable({
-      loader: () => import("./page/dashboard/Dashboard"),
+      loader: () => import("./page/overview/Overview"),
+      loading: () => <div>Loading..</div>
+    })
+  },
+  {
+    private: true,
+    path: "/pos",
+    exact: true,
+    meta: {
+      title: siteTitle,
+      description: siteMetaDescription
+    },
+    component: Loadable({
+      loader: () => import("./page/pos/Pos"),
       loading: () => <div>Loading..</div>
     })
   }

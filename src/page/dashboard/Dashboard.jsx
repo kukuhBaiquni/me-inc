@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import "./Dashboard.scss";
 import { Icon, Collapse } from "antd";
 import { menu } from "../../constant/enums";
+import { Link } from "react-router-dom";
 
 const { Panel } = Collapse;
 
@@ -19,12 +20,14 @@ export default class Dashboard extends Component {
                 <div className="menu-wrapper">
                     {menu.map((x, i) => (
                         <div key={i} className="menu-list">
-                            <div className="menu-display">
-                                <div className="menu-inside">
-                                    <Icon type={x.icon} style={iconStyle} />
-                                    {x.title}
+                            <Link to={x.path}>
+                                <div className="menu-display">
+                                    <div className="menu-inside">
+                                        <Icon type={x.icon} style={iconStyle} />
+                                        {x.title}
+                                    </div>
                                 </div>
-                            </div>
+                            </Link>
                         </div>
                     ))}
                 </div>

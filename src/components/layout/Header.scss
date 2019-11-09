@@ -5,4 +5,38 @@
     height: 70px;
     font-family: $bold;
     font-size: 19px;
+    justify-content: flex-end;
+    padding: 0 50px;
+    display: flex;
+    .right-menu {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        width: 70px;
+        cursor: pointer;
+        .logout-button {
+            background-color: transparent;
+            color: white;
+            border: 1px solid white;
+        }
+        .logout-button:hover {
+            color: $primaryDarker;
+            border: 1px solid $primaryDarker;
+        }
+    }
+    .separator {
+        margin: 15px 25px;
+        width: 1px;
+        background-color: white;
+    }
+    .user-info {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        color: white;
+        .prop {font-family: $regular;}
+        .val {font-family: $bold; color: $success}
+    }
 }

@@ -23,7 +23,7 @@ export const ROUTE = [
       description: siteMetaDescription
     },
     component: Loadable({
-      loader: () => import("./page/Dashboard"),
+      loader: () => import("./page/dashboard/Dashboard"),
       loading: () => <div>Loading..</div>
     })
   },
@@ -37,7 +37,7 @@ export const ROUTE = [
       description: siteMetaDescription
     },
     component: Loadable({
-      loader: () => import("./page/Dashboard"),
+      loader: () => import("./page/dashboard/Dashboard"),
       loading: () => <div>Loading..</div>
     })
   }

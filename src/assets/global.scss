@@ -1,8 +1,5 @@
 @import './variable.scss';
-
-html {
-    height: 100%;    
-}
+@import '~antd/dist/antd.css';
 
 body {
     margin: 0;

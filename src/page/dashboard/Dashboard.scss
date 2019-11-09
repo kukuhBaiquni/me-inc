@@ -1,0 +1,71 @@
+@import "../../assets/variable.scss";
+
+body {
+    background-color: $dark;
+}
+
+.scope-container{
+    display: flex;
+    .menu-wrapper {
+        padding-top: 50px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        width: 50%;
+        padding-left: 50px;
+        .menu-list {
+            height: 250px;
+            width: 250px;
+            padding: 5px;
+            .menu-display {
+                background-color: $primary;
+                border-radius: 5px;
+                height: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-size: 26px;
+                color: white;
+                font-family: $bold;
+                .menu-inside {
+                    display: flex;
+                    flex-direction: column;
+                    height: 45%;
+                    justify-content: space-between;
+                }
+            }
+            .menu-display:hover {
+                background-color: $primaryDarker;
+                cursor: pointer;
+            }
+        }
+    }
+    .info-app {
+        padding: 50px;
+        width: 50%;
+        h3 {
+            font-family: $regular;
+            color: white;
+            font-size: 26px;
+        }
+        h4{
+            color: $primary;
+            font-size: 20px;
+        }
+        p {
+            font-family: $regular;
+            font-size: 18px;
+            color: white;
+        }
+        .panel {
+            color: white;
+            font-family: $regular;
+            font-size: 18px;
+            p {
+                color: white;
+                font-family: $light;
+                font-size: 18px;
+            }
+        }
+    }
+}

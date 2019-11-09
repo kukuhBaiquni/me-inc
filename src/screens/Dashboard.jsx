@@ -44,7 +44,7 @@ export default class Dashboard extends Component {
                     {
                         statisticLooper.map((widget, index) => {
                             return(
-                                <Col style={{backgroundColor: "orange"}} key={index} md={24} lg={4} sm={24} xs={24}>
+                                <Col key={index} md={24} lg={4} sm={24} xs={24}>
                                     <Row className="o-widget-box" type="flex" justify="start" align="top">
                                         <Col span={24}>
                                             <Row type="flex">                                            

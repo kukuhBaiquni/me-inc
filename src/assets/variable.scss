@@ -1,0 +1,45 @@
+@import url('https://fonts.googleapis.com/css?family=Asap&display=swap');
+
+font-face {
+  font-family: 'Regular';
+  src: url('./fonts/Regular.ttf') format('truetype')
+}
+
+@font-face {
+  font-family: 'Italic';
+  src: url('./fonts/Italic.ttf') format('truetype')
+}
+
+@font-face {
+  font-family: 'Bold';
+  src: url('./fonts/Bold.ttf') format('truetype')
+}
+
+@font-face {
+  font-family: 'BoldItalic';
+  src: url('./fonts/BoldItalic.ttf') format('truetype')
+}
+
+@font-face {
+  font-family: 'Light';
+  src: url('./fonts/Light.ttf') format('truetype')
+}
+
+@font-face {
+  font-family: 'LightItalic';
+  src: url('./fonts/LightItalic.ttf') format('truetype')
+}
+
+$regular: "Regular";
+$italic: "Italic";
+$bold: "Bold";
+$boldItalic: "BoldItalic";
+$light: "Light";
+$lightItalic: "LightItalic";
+
+$primary: #54b9fb;
+$error: #ff4a4a;
+$success: #65fa85;
+$warning: #fff569;
+$info: #7167ff;
+$dark: #4b4b4b;

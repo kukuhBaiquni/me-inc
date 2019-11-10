@@ -1,13 +1,13 @@
 @import url('https://fonts.googleapis.com/css?family=Asap&display=swap');
 
-font-face {
+@font-face {
   font-family: 'Regular';
   src: url('./fonts/Regular.ttf') format('truetype')
 }
 
 @font-face {
   font-family: 'Italic';
-  src: url('./fonts/Italic.ttf') format('truetype')
+  src: url('./fonts/Italic.otf') format('otf')
 }
 
 @font-face {
@@ -17,7 +17,7 @@ font-face {
 
 @font-face {
   font-family: 'BoldItalic';
-  src: url('./fonts/BoldItalic.ttf') format('truetype')
+  src: url('./fonts/BoldItalic.otf') format('otf')
 }
 
 @font-face {
@@ -27,7 +27,7 @@ font-face {
 
 @font-face {
   font-family: 'LightItalic';
-  src: url('./fonts/LightItalic.ttf') format('truetype')
+  src: url('./fonts/LightItalic.otf') format('otf')
 }
 
 $regular: "Regular";

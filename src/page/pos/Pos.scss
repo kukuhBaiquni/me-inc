@@ -30,16 +30,100 @@ body {
             font-family: $regular;
             font-size: 18px;
             cursor: pointer;
+            animation-name: fading;
+            animation-duration: 1s;
+        }
+        tr:hover {
+            background-color: $primary;
+            color: $dark;
         }
         .filter-box {
             height: 180px;
+            margin-top: 20px;
             background-color: $primary;
             border-radius: 5px;
             color: $dark;
             padding: 8px 18px;
             font-family: $regular;
             font-size: 18px;
-            width: 300px
+            width: 300px;
         }
     }
+}
+
+.ant-modal-content {
+    .ant-modal-header {
+        background-color: $primary;
+        .ant-modal-title {
+            color: white;
+            font-family: $bold;
+            font-size: 20px;
+        }
+    }
+    .ant-modal-body {
+        label {
+            font-family: $regular;
+            color: $dark
+        }
+        p {
+            font-family: $bold;
+            margin-bottom: 10px;
+            animation-name: fading;
+            animation-duration: 0.5s;
+        }
+        table{
+            margin: 10px 0;
+        }
+        th {
+            color: white;
+            background-color: $primary;
+            font-family: $bold;
+            font-size: 14px;
+            text-align: center;
+        }
+        tr {
+            text-align: center;
+            font-family: $regular;
+            color: $dark;
+            font-size: 14px;
+            animation-name: fading;
+            animation-duration: 1s;
+        }
+        input {
+            margin: 5px 0;
+            animation-name: fading;
+            animation-duration: 0.5s;
+        }
+        .row-loop {
+            margin: 10px 0;
+            animation-name: fading;
+            animation-duration: 1s;
+            label {
+                font-size: 14px;
+            }
+            .select-product {
+                margin: 5px 0;
+                font-family: $regular;
+                width: 100%;
+            }
+            .product-qty {
+                width: 100%;
+                margin: 5px 0;
+            }
+        }
+        .inliner {
+            display: flex;
+            justify-content: space-between;
+        }
+        color: $primary;
+        font-size: 16px;
+    }
+    .ant-modal-footer {
+        font-family: $bold;
+    }
+}
+
+@keyframes fading {
+    from {opacity: 0;}
+    to {opacity: 1;}
 }

@@ -65,5 +65,18 @@ export const ROUTE = [
       loader: () => import("./page/pos/Pos"),
       loading: () => <div>Loading..</div>
     })
+  },
+  {
+    private: true,
+    path: "/my-products",
+    exact: true,
+    meta: {
+      title: siteTitle,
+      description: siteMetaDescription
+    },
+    component: Loadable({
+      loader: () => import("./page/products/Products"),
+      loading: () => <div>Loading..</div>
+    })
   }
 ];

@@ -1,0 +1,142 @@
+@import "../../assets/variable.scss";
+
+body {
+    background-color: $dark;
+}
+
+.products-main {
+    display: flex;
+    .list-wrapper {
+        padding-top: 120px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        width: 70%;
+        padding-left: 50px;
+        .list-style-wrapper {
+            width: calc(100% / 3);
+            height: 250px;
+            padding: 5px;
+            animation-name: fading;
+            animation-duration: 1s;
+            .list-style {
+                background-color: white;
+                height: 100%;
+                border-radius: 5px;
+                .header {
+                    background-color: $primary;
+                    width: 100%;
+                    padding: 5px 10px;
+                    color: white;
+                    font-family: $bold;
+                    font-size: 18px;
+                    border-top-right-radius: 5px;
+                    border-top-left-radius: 5px;
+                }
+                .body {
+                    padding: 10px 15px;
+                    display: flex;
+                    .left-side {
+                        width: 35%;
+                        img {
+                            width: 100%;
+                        }
+                    }
+                    .right-side {
+                        width: 65%;
+                        .right-top {
+                            border-radius: 10px;
+                            display: flex;
+                            background-color: $primary;
+                            border: 1px solid #c8c8c8;
+                            width: 100%;
+                            .right-left {
+                                width: 50%;
+                                padding: 10px;
+                                label {
+                                    font-family: $regular;
+                                    font-size: 16px;
+                                    color: white;
+                                }
+                            }
+                            .right-right {
+                                width: 50%;
+                                padding: 10px;
+                                label {
+                                    font-family: $bold;
+                                    font-size: 16px;
+                                    color: white;
+                                }
+                            }
+                        }
+                        .right-bottom {
+                            width: 100%;
+                            padding: 7px 14px;
+                            border: 1px solid #c8c8c8;
+                            border-radius: 10px;
+                            margin-top: 10px;
+                            font-family: $bold;
+                            font-size: 20px;
+                        }
+                    }
+                }
+                .footer {
+                    padding: 0 15px;
+                    display: flex;
+                    justify-content: flex-end;
+                    align-items: center;
+                    button {
+                        margin-left: 5px;
+                        width: 100px;
+                    }
+                }
+            }
+        }
+    }
+    .new-list-wrapper {
+        width: 30%;
+        padding: 120px 50px;
+        position: fixed;
+        top: 0;
+        right: 0;
+        .form-wrapper {
+            background-color: white;
+            border-radius: 5px;
+            height: 90%;
+            width: 100%;
+            padding: 15px 20px;
+            h2 {
+                font-family: $bold;
+            }
+            label {
+                font-family: $regular;
+                font-size: 16px;
+            }
+            input {
+                margin: 10px 0;
+                font-family: $regular;
+            }
+            .radio {
+                margin: 10px 0;
+                font-family: $regular;
+                width: 100%;
+            }
+            .select {
+                width: 100%;
+                margin: 10px 0;
+            }
+            .button {
+                height: 40px;
+                font-family: $bold;
+            }
+            .upload {
+                margin: 10px 0;
+            }
+        }
+    }
+}
+
+@keyframes fading {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}

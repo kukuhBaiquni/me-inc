@@ -6,11 +6,6 @@ import { Link } from "react-router-dom";
 
 const { Panel } = Collapse;
 
-const iconStyle = {
-    color: "white",
-    fontSize: "50px"
-};
-
 const Nodez = ({title}) => <h4>{title}</h4>
 
 export default class Dashboard extends Component {
@@ -23,8 +18,8 @@ export default class Dashboard extends Component {
                             <Link to={x.path}>
                                 <div className="menu-display">
                                     <div className="menu-inside">
-                                        <Icon type={x.icon} style={iconStyle} />
-                                        {x.title}
+                                        <Icon type={x.icon} className="dashboard-icon" />
+                                        <p className="title-transition">{x.title}</p>
                                     </div>
                                 </div>
                             </Link>
@@ -32,8 +27,7 @@ export default class Dashboard extends Component {
                     ))}
                 </div>
                 <div className="info-app">
-                    <h3>Syifa Digital Service | version 1.0.0-beta~</h3>
-                    <p>Menu Description</p>
+                    <h3>Menu Description</h3>
                     <Collapse accordion={true} style={{backgroundColor: "transparent"}} bordered={false}>
                         {
                             menu.map((x, i) => (

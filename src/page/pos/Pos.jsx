@@ -1,80 +1,122 @@
 import React, { PureComponent } from "react";
 import "./Pos.scss";
-import { Table, Divider, Tag, Button, Select, Col, Row, Input, Modal, InputNumber } from "antd";
+import { Table, Divider, Radio, Tag, Button, Select, Col, Row, Input, Modal, DatePicker } from "antd";
 import nanoid from "nanoid";
 import moment from "moment";
+import ModalDetails from "./ModalDetails";
+import ModalTransaction from "./ModalTransaction";
 
 export default class Pos extends PureComponent {
     constructor(props) {
         super(props)
         this.state = {
-            isModalVisible: false,
+            isModalDetailsVisible: false,
+            isModalTransactionVisible: false,
             loading: false,
             details: null
         }
     };
 
-    _closeModal = () => this.setState({isModalVisible: false});
-    _showModal = () => this.setState({isModalVisible: true});
+    _closeDetailModal = () => this.setState({isModalDetailsVisible: false});
+    _showDetailModal = () => this.setState({isModalDetailsVisible: true});
+    _closeTransactionModal = () => this.setState({isModalTransactionVisible: false});
+    _showTransactionModal = () => this.setState({isModalTransactionVisible: true});
     _handleOk = () => {
         this.setState({ loading: true });
         setTimeout(() => {
-            this.setState({ loading: false, isModalVisible: false });
+            this.setState({ loading: false, isModalDetailsVisible: false });
         }, 3000);
     };
 
-    _tjimenQ = (evt, data, index) => {
+    _setModalData = (evt, data, index) => {
         this.setState({details: data});
-        this._showModal();
+        this._showDetailModal();
     };
     
     render() {
-        const { isModalVisible, loading, details } = this.state;
+        const { isModalDetailsVisible, loading, details, filterByTime, filterType, isModalTransactionVisible } = this.state;
+        const { RangePicker } = DatePicker;
         return (
             <div className="pos-main">
-                <ModalDetail 
-                    closeModal={this._closeModal}
-                    showModal={this._showModal}
+                <ModalDetails
+                    closeModal={this._closeDetailModal}
                     onSubmit={this._handleOk}
-                    isModalVisible={isModalVisible}
+                    isVisible={isModalDetailsVisible}
+                    loading={loading}
+                    data={details}
+                />
+                <ModalTransaction
+                    closeModal={this._closeTransactionModal}
+                    onSubmit={this._handleOk}
+                    isVisible={isModalTransactionVisible}
                     loading={loading}
                     data={details}
                 />
                 <div className="content-wrapper">
                     Transaction List
-                    <div className="filter-box">
-                        <Col md={24}>
-                            <Row type="flex" align="middle" style={{marginBottom: 10}}>
-                                Filter by
+                    <Row>
+                        <Col className="filter-box" md={24}>
+                            <Row type="flex" align="middle" className="filter-header">
+                                Search Transaction
                             </Row>
-                            <Row>
-                                <Col md={24}>
-                                    <Select defaultValue="lucy" style={{ width: '100%', marginBottom: "10px" }}>
+                            <Row className="radio-status">
+                                <Col md={24}>   
+                                    <Radio.Group defaultValue={0}>
+                                        <Radio value={0}>All</Radio>
+                                        <Radio value={1}>Success</Radio>
+                                        <Radio value={2}>Pending</Radio>
+                                        <Radio value={3}>Process</Radio>
+                                    </Radio.Group>
+                                </Col>
+                            </Row>
+                            <Row style={{height: "15px"}} />
+                            <Row type="flex" align="middle" className="select-date-title">
+                                Set Period
+                            </Row>
+                            <Row className="datepicker-container">
+                                <Col md={14}>
+                                    <RangePicker
+                                        showTime={{ format: 'HH:mm' }}
+                                        format="DD MMM YYYY"
+                                        placeholder={['Start Time', 'End Time']}
+                                        // onChange={onChange}
+                                        // onOk={onOk}
+                                        />
+                                </Col>
+                            </Row>
+                            <Row className="filter-row">
+                                <Col md={10}>
+                                    <Select name="filterType" defaultValue="name" className="select-search-type">
                                         <Select.Option value="name">Name</Select.Option>
-                                        <Select.Option value="lucy">TRX</Select.Option>
-                                        <Select.Option value="Yiminghe">Sales</Select.Option>
+                                        <Select.Option value="trx">TRX</Select.Option>
+                                        <Select.Option value="Amount">Amount</Select.Option>
+                                        <Select.Option value="address">Address</Select.Option>
                                     </Select>
                                 </Col>
-                            </Row>
-                            <Row>
-                                <Col md={24}>   
-                                    <Input style={{marginBottom: "15px"}} placeholder="Search Transaction.." />
+                                <Col md={10}>   
+                                    <Input allowClear={true} placeholder="Search Transaction.." />
                                 </Col>
-                            </Row>
-                            <Row>
-                                <Col md={12}>
+                                <Col md={2}>
                                     <Button type="primary">Search</Button>
                                 </Col>
                             </Row>
+                            <Row style={{height: "5px"}} />
                         </Col>
-                    </div>
+                    </Row>
+                    <Row>
+                        <Col md={24}>
+                            <div onClick={this._showTransactionModal} className="new-transaction">
+                                +New Transaction
+                            </div>
+                        </Col>
+                    </Row>
                     <Table
                         bordered={true}
                         columns={columns}
                         dataSource={data}
                         onRow={(data, index) => {
                             return {
-                                onClick: (evt) => this._tjimenQ(evt, data, index)
+                                onClick: (evt) => this._setModalData(evt, data, index)
                             }
                         }}
                     />
@@ -84,145 +126,7 @@ export default class Pos extends PureComponent {
     }
 };
 
-class ModalDetail extends PureComponent {
-    constructor(props) {
-        super(props)
-        this.state = {
-            isEditing: false
-        };
-    };
 
-    componentDidUpdate(prevProps) {
-        if(prevProps.isModalVisible !== this.props.isModalVisible) {
-            if(this.state.isEditing) {
-                this.setState({isEditing: false});
-            }
-        }
-    };
-
-    _editData = () => this.setState({isEditing: true});
-    _cancelEdit = () => this.setState({isEditing: false});
-
-    render() {
-        const { onSubmit, closeModal, data, isModalVisible, loading } = this.props;
-        const { isEditing } = this.state;
-        if(isEditing) {
-            return(
-                <Modal
-                    visible={isModalVisible}
-                    title="EDIT TRANSACTION"
-                    onOk={onSubmit}
-                    onCancel={closeModal}
-                    width="40%"
-                    footer={[
-                        <Button key="back" onClick={this._cancelEdit}>
-                            Cancel
-                        </Button>,
-                        <Button key="save" style={{backgroundColor: "green", color: "white"}} loading={loading} onClick={onSubmit}>
-                            Save
-                        </Button>
-                    ]}
-                    >
-                    {
-                        data &&
-                        <>
-                            <label>TRX</label>
-                            <Input id="trx" defaultValue={data.trx} disabled />
-                            <label>Name</label>
-                            <Input id="name" defaultValue={data.name} disabled />
-                            <label>Detail items</label>
-                            {
-                                dataTable.map((x, i) => (
-                                    <Row className="row-loop">
-                                        <Col md={1}>
-                                            <label>{i + 1}</label>
-                                        </Col>
-                                        <Col md={5}>
-                                            <Row>
-                                                <label>Product Name</label>
-                                            </Row>
-                                            <Row>
-                                                <Select id="productName" defaultValue="lucy" className="select-product">
-                                                    <Select.Option value="name">Air Gabon</Select.Option>
-                                                    <Select.Option value="lucy">Air Mesir</Select.Option>
-                                                    <Select.Option value="Yiminghe">Air Gunung</Select.Option>
-                                                </Select>
-                                            </Row>
-                                        </Col>
-                                        <Col md={1} />
-                                        <Col md={5}>
-                                            <Row>
-                                                <label>Quantity</label>
-                                            </Row>
-                                            <Row>
-                                                <Input defaultValue={x.qty} maxLength={2} className="product-qty" />
-                                            </Row>
-                                        </Col>
-                                        <Col md={1} />
-                                        <Col md={5}>
-                                            <Row>
-                                                <label>Price</label>
-                                            </Row>
-                                            <Row>
-                                                <Input disabled defaultValue={x.price} maxLength={2} className="product-qty" />
-                                            </Row>
-                                        </Col>
-                                        <Col md={1} />
-                                        <Col md={5}>
-                                            <Row>
-                                                <label>Subtotal</label>
-                                            </Row>
-                                            <Row>
-                                                <Input disabled defaultValue={x.subtotal} maxLength={2} className="product-qty" />
-                                            </Row>
-                                        </Col>
-                                    </Row>
-                                ))
-                            }
-                        </>
-                    }
-                </Modal>
-            )
-        }else{
-            return(
-                <Modal
-                    visible={isModalVisible}
-                    title="TRANSACTION DETAILS"
-                    onOk={onSubmit}
-                    onCancel={closeModal}
-                    width="40%"
-                    footer={[
-                        <Button key="back" onClick={this._editData}>
-                            Edit
-                        </Button>,
-                        <Button key="submit" type="danger" loading={loading} onClick={onSubmit}>
-                            Delete
-                        </Button>,
-                    ]}
-                    >
-                    {
-                        data &&
-                        <>
-                            <label>TRX</label>
-                            <p>{data.trx}</p>
-                            <label>Name</label>
-                            <p>{data.name}</p>
-                            <label>Detail items</label>
-                            <Table
-                                bordered={true}
-                                columns={columnTable}
-                                dataSource={dataTable}
-                                pagination={false}
-                            />
-                            <label>Total</label>
-                            <p>{data.amount}</p>
-                        </>
-                    }
-                </Modal>
-            )
-        }
-    }
-}
 
 const columns = [
     {
@@ -273,7 +177,7 @@ const columns = [
         title: "Status",
         dataIndex: "status",
         key: "status",
-        render: status => status ? <p style={{color: "green"}}>Success</p> : <p style={{color: "yellow"}}>Pending</p>
+    render: status => status ? <span style={{color: "green"}}>Success</span> : <span style={{color: "orange"}}>Pending</span>
     },
     {
         title: "Amount",
@@ -297,45 +201,8 @@ const data = Array(425)
             address: "Jl. kaki",
             items: ["SempaQ", "KutanQ"],
             trx: nanoid(10),
-            time: moment().format("DD MMM YYYY - HH:mm"),
+            time: moment().format("ddd DD MMM YYYY - HH:mm"),
             status: Math.random() * 100 >= 50 ? true : false
         };
     });
 
-    const columnTable = [
-        {
-            title: "No",
-            dataIndex: "key",
-            key: "key"
-        },
-        {
-            title: "Product Name",
-            dataIndex: "name",
-            key: "name"
-        },
-        {
-            title: "Price",
-            dataIndex: "price",
-            key: "price"
-        },
-        {
-            title: "Quantity",
-            dataIndex: "qty",
-            key: "qty"
-        },
-        {
-            title: "Subtotal",
-            dataIndex: "subtotal",
-            key: "subtotal"
-        }
-    ];
-
-    const dataTable = Array(4).fill("TjimenQ").map((x ,i) => {
-        return {
-            key: i + 1,
-            name: "Product isi ulang air" + (i + 1),
-            qty: Math.ceil(Math.random() * 5),
-            subtotal: "Rp. 25.000,-",
-            price: "Rp. 5000,-"
-        }
-    })

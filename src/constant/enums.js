@@ -18,9 +18,10 @@ export const menu = [
         description: "Di halaman ini Anda dapat melihat semua data yang di visualisasikan menggunakan grafik."
     },
     {
-        title: "History",
-        icon: "history",
-        path: ""
+        title: "My Products",
+        icon: "tag",
+        path: "/my-products",
+        description: "Anda dapat melihat, mengubah, menghapus, menambah produk di halaman ini."
     },
     {
         title: "Point of Sales",

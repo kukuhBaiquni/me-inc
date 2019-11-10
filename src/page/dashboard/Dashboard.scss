@@ -7,7 +7,7 @@ body {
 .scope-container{
     display: flex;
     .menu-wrapper {
-        padding-top: 150px;
+        padding-top: 120px;
         display: flex;
         flex-wrap: wrap;
         justify-content: flex-start;
@@ -24,25 +24,46 @@ body {
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                font-size: 26px;
                 color: white;
                 font-family: $bold;
+                transition: background-color 0.25s;
                 .menu-inside {
                     display: flex;
                     flex-direction: column;
                     height: 45%;
                     justify-content: space-between;
+                    margin-top: 0;
+                    transition: margin-top 0.25s;
+                    .dashboard-icon {
+                        color: white;
+                        font-size: 50px;
+                        transition: font-size 0.25s;
+                    }
+                    .title-transition {
+                        font-size: 26px;
+                        transition: font-size 0.25s;
+                        margin-top: 20px;
+                    }
                 }
             }
             .menu-display:hover {
                 background-color: $primaryDarker;
                 cursor: pointer;
+                .dashboard-icon {
+                    font-size: 85px;
+                }
+                .title-transition {
+                    font-size: 32px;
+                }
+                .menu-inside {
+                    margin-top: -20px
+                }
             }
         }
     }
     .info-app {
         padding: 50px;
-        padding-top: 150px;
+        padding-top: 120px;
         width: 50%;
         h3 {
             font-family: $regular;

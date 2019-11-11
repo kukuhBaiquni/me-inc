@@ -1,12 +1,12 @@
 import React, { PureComponent } from "react";
-import "./Pos.scss";
+import "./Customer.scss";
 import { Table, Radio, Button, Select, Col, Row, Input, DatePicker } from "antd";
 import nanoid from "nanoid";
 import moment from "moment";
 import ModalDetails from "./ModalDetails";
-import ModalTransaction from "./ModalTransaction";
+import ModalTransaction from "./ModalCustomer";
 
-export default class Pos extends PureComponent {
+export default class Customer extends PureComponent {
     constructor(props) {
         super(props)
         this.state = {
@@ -53,7 +53,7 @@ export default class Pos extends PureComponent {
                     data={details}
                 />
                 <div className="content-wrapper">
-                    Transaction List
+                    Customer List
                     <Row>
                         <Col className="filter-box" md={24}>
                             <Row type="flex" align="middle" className="filter-header">
@@ -106,7 +106,7 @@ export default class Pos extends PureComponent {
                     <Row>
                         <Col md={24}>
                             <div onClick={this._showTransactionModal} className="new-transaction">
-                                +New Transaction
+                                +New Customer
                             </div>
                         </Col>
                     </Row>
@@ -132,8 +132,6 @@ export default class Pos extends PureComponent {
     }
 };
 
-
-
 const columns = [
     {
         title: "No",
@@ -141,74 +139,53 @@ const columns = [
         key: "no"
     },
     {
-        title: "TRX",
-        dataIndex: "trx",
-        key: "trx"
+        title: "First Name",
+        dataIndex: "firstName",
+        key: "firstName"
     },
     {
-        title: "Customer Name",
-        dataIndex: "name",
-        key: "name",
-        render: text => <a>{text}</a>
+        title: "Last Name",
+        dataIndex: "lastName",
+        key: "lastName"
+    },
+    {
+        title: "Join Date",
+        dataIndex: "join",
+        key: "join"
     },
     {
         title: "Address",
-        dataIndex: "address",
-        key: "address"
-    },
-    // {
-    //     title: "List Product",
-    //     key: "tags",
-    //     dataIndex: "tags",
-    //     render: tags => (
-    //         <span>
-    //             <ul>
-    //                 {tags.map((tag, i) => {
-    //                     let color = tag.length > 5 ? "geekblue" : "green";
-    //                     if (tag === "loser") {
-    //                         color = "volcano";
-    //                     }
-    //                     return (
-    //                         <li key={i}>{tag.toUpperCase()}</li>
-    //                         // <Tag color={color} key={tag}>
-    //                         // {tag.toUpperCase()}
-    //                         // </Tag>
-    //                     );
-    //                 })}
-    //             </ul>
-    //         </span>
-    //     )
-    // },
-    {
-        title: "Status",
-        dataIndex: "status",
-        key: "status",
-    render: status => status ? <span style={{color: "green"}}>Success</span> : <span style={{color: "orange"}}>Pending</span>
+        dataIndex: "address.street",
+        key: "address.street"
     },
     {
-        title: "Amount",
-        dataIndex: "amount",
-        key: "amount"
+        title: "Zone Code",
+        dataIndex: "address.zoneCode",
+        key: "address.zoneCode"
     },
     {
-        title: "Time",
-        dataIndex: "time",
-        key: "time"
-    }
+        title: "Phone",
+        dataIndex: "phone",
+        key: "phone"
+    },
+    {
+        title: "Group",
+        dataIndex: "group",
+        key: "group"
+    },
 ];
 
-const data = Array(425)
-    .fill("tjurut")
-    .map((x, i) => {
-        return {
-            key: i + 1,
-            name: "TjimenQ",
-            amount: Math.ceil(Math.random() * 76),
-            address: "Jl. kaki",
-            items: ["SempaQ", "KutanQ"],
-            trx: nanoid(10),
-            time: moment().format("ddd DD MMM YYYY - HH:mm"),
-            status: Math.random() * 100 >= 50 ? true : false
-        };
-    });
-
+const data = Array(120).fill("Q").map((x, i) => {
+    return {
+        key: i + 1,
+        firstName: "Markonah",
+        lastName: "Gabon",
+        join: "Yesterday",
+        address: {
+            street: "Jl. Gabon Master Dewa Tjurut Pertjauan No.990 Rt.01/Rw.03",
+            zoneCode: "QWEASD"
+        },
+        phone: "08123456789",
+        group: "CB1"
+    }
+});

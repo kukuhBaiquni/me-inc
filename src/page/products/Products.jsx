@@ -183,7 +183,7 @@ class Products extends PureComponent {
                             <Radio value="gram">Gr</Radio>
                             <Radio value="liter">L</Radio>
                             <Radio value="mililiter">Ml</Radio>
-                            <Radio value="Piece">Pcs</Radio>
+                            <Radio value="piece">Pcs</Radio>
                         </Radio.Group>
                         <label>Unit Size</label> <br />
                         <Input style={{ width: 160 }} value={formControl.unitSize} onChange={x => this._onChange("unitSize", x)} suffix={formControl.unitType} placeholder="Unit Size" />
@@ -209,7 +209,7 @@ class Products extends PureComponent {
                         {errors.map(x => x.type).includes("photo") && <p className="invalid-input">{errors.filter(x => x.type === "photo")[0].message}</p>}
                         <label>Administrator Permission Key</label>
                         <Input value={permissionKey} onChange={x => this.setState({ permissionKey: x.target.value }) } allowClear />
-                        <Button onClick={this._onSubmit} className="button" block type="primary" > Create </Button>
+                        <Button loading={products.processing} onClick={this._onSubmit} className="button" block type="primary" > Create </Button>
                     </div>
                 </div>
             </div>
@@ -249,7 +249,7 @@ class Renderer extends PureComponent {
                                     </Row>
                                     <Row>
                                         <label>
-                                            {data.unitSize} {data.unitType}
+                                            {data.unitSize}
                                         </label>
                                     </Row>
                                 </div>

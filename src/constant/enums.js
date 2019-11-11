@@ -50,7 +50,7 @@ export const menu = [
     {
         title: "Customers",
         icon: "team",
-        path: "",
-        description: "Anda dapat melihat, menambah, menghapus dan mengubah data pelanggan."
+        path: "/customers",
+        description: "Anda dapat melihat, menambah, menghapus dan mengubah data pelanggan.",
     }
 ];

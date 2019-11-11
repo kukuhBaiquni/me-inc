@@ -36,10 +36,17 @@ export function* _newProduct(payload) {
             type: actionTypes.PRODUCT_RESET
         });
     }catch (error) {
-        yield put({
-            type: actionTypes.NEW_PRODUCT_ERROR,
-            message: error.response.data.message
-        });
+        if(error.response) {
+            yield put({
+                type: actionTypes.NEW_PRODUCT_ERROR,
+                message: error.response.data.message
+            });
+        }else{
+            yield put({
+                type: actionTypes.NEW_PRODUCT_ERROR,
+                message: "Unable connect to server"
+            });
+        }
     }
 };
 
@@ -58,10 +65,17 @@ export function* _getProducts(payload) {
             type: actionTypes.PRODUCT_RESET
         });
     }catch (error) {
-        yield put({
-            type: actionTypes.GET_PRODUCT_ERROR,
-            message: error.response.data.message
-        });
+        if(error.response) {
+            yield put({
+                type: actionTypes.NEW_PRODUCT_ERROR,
+                message: error.response.data.message
+            });
+        }else{
+            yield put({
+                type: actionTypes.NEW_PRODUCT_ERROR,
+                message: "Unable connect to server"
+            });
+        }
     }
 };
 
@@ -80,10 +94,16 @@ export function* _deleteProduct(payload) {
             type: actionTypes.PRODUCT_RESET
         });
     }catch (error) {
-        console.log(error)
-        yield put({
-            type: actionTypes.DELETE_PRODUCT_ERROR,
-            message: error.response.data.message
-        });
+        if(error.response) {
+            yield put({
+                type: actionTypes.NEW_PRODUCT_ERROR,
+                message: error.response.data.message
+            });
+        }else{
+            yield put({
+                type: actionTypes.NEW_PRODUCT_ERROR,
+                message: "Unable connect to server"
+            });
+        }
     }
 };

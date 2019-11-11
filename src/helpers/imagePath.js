@@ -1,0 +1,1 @@
+export const imagePath = "http://192.168.43.24:8080/images/";

@@ -1,6 +1,6 @@
 import React, { PureComponent } from "react";
 import "./Pos.scss";
-import { Table, Divider, Radio, Tag, Button, Select, Col, Row, Input, Modal, DatePicker } from "antd";
+import { Table, Radio, Button, Select, Col, Row, Input, DatePicker } from "antd";
 import nanoid from "nanoid";
 import moment from "moment";
 import ModalDetails from "./ModalDetails";

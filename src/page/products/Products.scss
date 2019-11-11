@@ -116,6 +116,14 @@ body {
             height: 90%;
             width: 100%;
             padding: 15px 20px;
+            .invalid-input {
+                margin-top: -8px;
+                color: $error;
+                font-size: 13px;
+                font-family: $regular;
+                animation-name: fading;
+                animation-duration: 1s;
+            }
             h2 {
                 font-family: $bold;
             }

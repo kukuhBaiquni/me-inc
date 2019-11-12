@@ -20,17 +20,13 @@ class Products extends PureComponent {
         super(props);
         this.state = {
             formControl: {
-                productName: "",
-                unitType: "kilogram",
-                unitSize: "",
-                price: "",
-                photo: null
+                ...initialData
             },
             fileList: [],
             permissionKey: "",
             errors: []
         };
-    }
+    };
 
     componentDidMount() {
         const { dispatch, products } = this.props;
@@ -40,7 +36,7 @@ class Products extends PureComponent {
                 config: {
                     methhod: "get",
                     headers: {
-                        "Content-Type": "application/json;utf-8"
+                        "Accept": "application/json;utf-8"
                     }
                 }
             });
@@ -131,7 +127,7 @@ class Products extends PureComponent {
             config: {
                 method: 'delete',
             },
-            data: target.productId
+            params: target.productId
         })
     };
 

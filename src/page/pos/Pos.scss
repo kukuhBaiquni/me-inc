@@ -14,6 +14,19 @@ body {
         font-size: 22px;
         color: white;
         font-family: $bold;
+        .header-ancestor {
+            background-color: white;
+            border-radius: 5px;
+            color: white;
+            margin-top: 10px;
+            .header-ancestor-title {
+                border-top-left-radius: 5px;
+                border-top-right-radius: 5px;
+                background-color: $primary;
+                display: flex;
+                padding: 8px 18px;
+            }
+        }
         .new-transaction {
             background-color: $primary;
             color: white;
@@ -63,7 +76,7 @@ body {
             font-family: $regular;
             font-size: 18px;
             .select-date-title {
-                color: $primary;
+                color: $dark;
                 font-family: $regular;
                 font-size: 16px;
             }
@@ -73,12 +86,8 @@ body {
                 animation-duration: 1s;
                 margin-bottom: 15px;
             }
-            .filter-header {
-                font-family: $bold;
-                color: $primary;
-            }
             .radio-status span {
-                color: $primary;
+                color: $dark;
                 font-family: $regular;
             }
             .filter-row div {
@@ -140,6 +149,8 @@ body {
         }
         input {
             margin: 5px 0;
+        }
+        input:not([type="radio"]) {
             animation-name: fading;
             animation-duration: 0.5s;
         }

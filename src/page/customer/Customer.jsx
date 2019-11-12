@@ -1,31 +1,49 @@
 import React, { PureComponent } from "react";
 import "./Customer.scss";
-import { Table, Radio, Button, Select, Col, Row, Input, DatePicker } from "antd";
-import nanoid from "nanoid";
+import { Table, Button, Select, Col, Row, Input } from "antd";
 import moment from "moment";
 import ModalDetails from "./ModalDetails";
-import ModalTransaction from "./ModalCustomer";
+import ModalCustomer from "./ModalCustomer";
+import { debounce } from "throttle-debounce";
+import * as actionType from "../../constant/actionTypes";
+import { connect } from "react-redux";
 
-export default class Customer extends PureComponent {
+class Customer extends PureComponent {
     constructor(props) {
         super(props)
         this.state = {
             isModalDetailsVisible: false,
-            isModalTransactionVisible: false,
+            isModalCreateVisible: false,
             loading: false,
-            details: null
+            details: null,
         }
     };
 
     _closeDetailModal = () => this.setState({isModalDetailsVisible: false});
     _showDetailModal = () => this.setState({isModalDetailsVisible: true});
-    _closeTransactionModal = () => this.setState({isModalTransactionVisible: false});
-    _showTransactionModal = () => this.setState({isModalTransactionVisible: true});
-    _handleOk = () => {
-        this.setState({ loading: true });
-        setTimeout(() => {
-            this.setState({ loading: false, isModalDetailsVisible: false });
-        }, 3000);
+    _closeTransactionModal = () => this.setState({isModalCreateVisible: false});
+    _showTransactionModal = () => this.setState({isModalCreateVisible: true});
+    _onSubmit = (data) => {
+        console.log(data)
+        this.setState({ isModalDetailsVisible: false });
+    };
+
+    _getZone = (type, id) => {
+        const { dispatch } = this.props;
+        dispatch({
+            type: actionType[`GET_${type.toUpperCase()}_REQUEST`],
+            config: {
+                method: "get",
+                headers: {
+                    "Accept": "application/json;utf-8"
+                },
+            },
+            params: (
+                type === "district" 
+                ? "" 
+                : id
+            )
+        });
     };
 
     _setModalData = (evt, data, index) => {
@@ -34,74 +52,52 @@ export default class Customer extends PureComponent {
     };
     
     render() {
-        const { isModalDetailsVisible, loading, details, filterByTime, filterType, isModalTransactionVisible } = this.state;
-        const { RangePicker } = DatePicker;
+        const { isModalDetailsVisible, loading, details, isModalCreateVisible } = this.state;
+        const { zone } = this.props;
         return (
             <div className="pos-main">
                 <ModalDetails
                     closeModal={this._closeDetailModal}
-                    onSubmit={this._handleOk}
+                    onSubmit={this._onSubmit}
                     isVisible={isModalDetailsVisible}
                     loading={loading}
                     data={details}
                 />
-                <ModalTransaction
+                <ModalCustomer
                     closeModal={this._closeTransactionModal}
-                    onSubmit={this._handleOk}
-                    isVisible={isModalTransactionVisible}
+                    onSubmit={this._onSubmit}
+                    isVisible={isModalCreateVisible}
                     loading={loading}
-                    data={details}
+                    getZone={this._getZone}
+                    zone={zone}
                 />
                 <div className="content-wrapper">
                     Customer List
-                    <Row>
-                        <Col className="filter-box" md={24}>
-                            <Row type="flex" align="middle" className="filter-header">
-                                Search Transaction
-                            </Row>
-                            <Row className="radio-status">
-                                <Col md={24}>   
-                                    <Radio.Group defaultValue={0}>
-                                        <Radio value={0}>All</Radio>
-                                        <Radio value={1}>Success</Radio>
-                                        <Radio value={2}>Pending</Radio>
-                                        <Radio value={3}>Process</Radio>
-                                    </Radio.Group>
-                                </Col>
-                            </Row>
-                            <Row style={{height: "15px"}} />
-                            <Row type="flex" align="middle" className="select-date-title">
-                                Set Period
-                            </Row>
-                            <Row className="datepicker-container">
-                                <Col md={14}>
-                                    <RangePicker
-                                        showTime={{ format: 'HH:mm' }}
-                                        format="DD MMM YYYY"
-                                        placeholder={['Start Time', 'End Time']}
-                                        // onChange={onChange}
-                                        // onOk={onOk}
-                                        />
-                                </Col>
-                            </Row>
-                            <Row className="filter-row">
-                                <Col md={10}>
-                                    <Select name="filterType" defaultValue="name" className="select-search-type">
-                                        <Select.Option value="name">Name</Select.Option>
-                                        <Select.Option value="trx">TRX</Select.Option>
-                                        <Select.Option value="Amount">Amount</Select.Option>
-                                        <Select.Option value="address">Address</Select.Option>
-                                    </Select>
-                                </Col>
-                                <Col md={10}>   
-                                    <Input allowClear={true} placeholder="Search Transaction.." />
-                                </Col>
-                                <Col md={2}>
-                                    <Button type="primary">Search</Button>
-                                </Col>
-                            </Row>
-                            <Row style={{height: "5px"}} />
-                        </Col>
+                    <Row className="header-ancestor">
+                        <Row className="header-ancestor-title">
+                            Search Customer
+                        </Row>
+                        <Row>
+                            <Col className="filter-box" md={24}>
+                                <Row className="filter-row">
+                                    <Col md={4}>
+                                        <Select name="filterType" defaultValue="name" className="select-search-type">
+                                            <Select.Option value="name">Name</Select.Option>
+                                            <Select.Option value="trx">Address</Select.Option>
+                                            <Select.Option value="Amount">Zone Code</Select.Option>
+                                            <Select.Option value="address">Phone</Select.Option>
+                                        </Select>
+                                    </Col>
+                                    <Col md={4}>   
+                                        <Input allowClear={true} placeholder="Search Customer.." />
+                                    </Col>
+                                    <Col md={2}>
+                                        <Button type="primary">Search</Button>
+                                    </Col>
+                                </Row>
+                                <Row style={{height: "5px"}} />
+                            </Col>
+                        </Row>
                     </Row>
                     <Row>
                         <Col md={24}>
@@ -118,7 +114,7 @@ export default class Customer extends PureComponent {
                             defaultPageSize: 20,
                             showSizeChanger: true,
                             pageSizeOptions: ['10', '20', '30', '40', '50'],
-                            showTotal: (total, range) => `${range[0]} - ${range[1]} of ${total} items`
+                            showTotal: (total, range) => `${range[0]} - ${range[1]} of ${total.toLocaleString()} items`
                         }}
                         onRow={(data, index) => {
                             return {
@@ -131,6 +127,8 @@ export default class Customer extends PureComponent {
         );
     }
 };
+
+export default connect(state => state)(Customer);
 
 const columns = [
     {
@@ -175,7 +173,7 @@ const columns = [
     },
 ];
 
-const data = Array(120).fill("Q").map((x, i) => {
+const data = Array(1120).fill("Q").map((x, i) => {
     return {
         key: i + 1,
         firstName: "Markonah",

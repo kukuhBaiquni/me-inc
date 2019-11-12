@@ -179,8 +179,14 @@ export default class ModalDetail extends PureComponent {
                                 dataSource={dataTable}
                                 pagination={false}
                             />
-                            <label>Total</label>
-                            <p>{data.amount}</p>
+                            <Row>
+                                <Col md={2}>
+                                    <label>Total</label>
+                                </Col>
+                                <Col>
+                                    <p>{data.amount}</p>
+                                </Col>
+                            </Row>
                         </>
                     }
                 </Modal>

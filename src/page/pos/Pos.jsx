@@ -54,54 +54,57 @@ export default class Pos extends PureComponent {
                 />
                 <div className="content-wrapper">
                     Transaction List
-                    <Row>
-                        <Col className="filter-box" md={24}>
-                            <Row type="flex" align="middle" className="filter-header">
-                                Search Transaction
-                            </Row>
-                            <Row className="radio-status">
-                                <Col md={24}>   
-                                    <Radio.Group defaultValue={0}>
-                                        <Radio value={0}>All</Radio>
-                                        <Radio value={1}>Success</Radio>
-                                        <Radio value={2}>Pending</Radio>
-                                        <Radio value={3}>Process</Radio>
-                                    </Radio.Group>
-                                </Col>
-                            </Row>
-                            <Row style={{height: "15px"}} />
-                            <Row type="flex" align="middle" className="select-date-title">
-                                Set Period
-                            </Row>
-                            <Row className="datepicker-container">
-                                <Col md={14}>
-                                    <RangePicker
-                                        showTime={{ format: 'HH:mm' }}
-                                        format="DD MMM YYYY"
-                                        placeholder={['Start Time', 'End Time']}
-                                        // onChange={onChange}
-                                        // onOk={onOk}
-                                        />
-                                </Col>
-                            </Row>
-                            <Row className="filter-row">
-                                <Col md={10}>
-                                    <Select name="filterType" defaultValue="name" className="select-search-type">
-                                        <Select.Option value="name">Name</Select.Option>
-                                        <Select.Option value="trx">TRX</Select.Option>
-                                        <Select.Option value="Amount">Amount</Select.Option>
-                                        <Select.Option value="address">Address</Select.Option>
-                                    </Select>
-                                </Col>
-                                <Col md={10}>   
-                                    <Input allowClear={true} placeholder="Search Transaction.." />
-                                </Col>
-                                <Col md={2}>
-                                    <Button type="primary">Search</Button>
-                                </Col>
-                            </Row>
-                            <Row style={{height: "5px"}} />
-                        </Col>
+                    <Row className="header-ancestor">
+                        <Row className="header-ancestor-title">
+                            Search Transaction
+                        </Row>
+                        <Row>
+                            <Col className="filter-box" md={24}>
+                                Status
+                                <Row className="radio-status">
+                                    <Col md={24}>   
+                                        <Radio.Group defaultValue={0}>
+                                            <Radio value={0}>All</Radio>
+                                            <Radio value={1}>Success</Radio>
+                                            <Radio value={2}>Pending</Radio>
+                                            <Radio value={3}>Process</Radio>
+                                        </Radio.Group>
+                                    </Col>
+                                </Row>
+                                <Row style={{height: "15px"}} />
+                                <Row type="flex" align="middle" className="select-date-title">
+                                    Set Period
+                                </Row>
+                                <Row className="datepicker-container">
+                                    <Col md={14}>
+                                        <RangePicker
+                                            showTime={{ format: 'HH:mm' }}
+                                            format="DD MMM YYYY"
+                                            placeholder={['Start Time', 'End Time']}
+                                            // onChange={onChange}
+                                            // onOk={onOk}
+                                            />
+                                    </Col>
+                                </Row>
+                                <Row className="filter-row">
+                                    <Col md={10}>
+                                        <Select name="filterType" defaultValue="name" className="select-search-type">
+                                            <Select.Option value="name">Name</Select.Option>
+                                            <Select.Option value="trx">TRX</Select.Option>
+                                            <Select.Option value="Amount">Amount</Select.Option>
+                                            <Select.Option value="address">Address</Select.Option>
+                                        </Select>
+                                    </Col>
+                                    <Col md={10}>   
+                                        <Input allowClear={true} placeholder="Search Transaction.." />
+                                    </Col>
+                                    <Col md={2}>
+                                        <Button type="primary">Search</Button>
+                                    </Col>
+                                </Row>
+                                <Row style={{height: "5px"}} />
+                            </Col>
+                        </Row>
                     </Row>
                     <Row>
                         <Col md={24}>

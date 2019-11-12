@@ -67,12 +67,12 @@ export function* _getProducts(payload) {
     }catch (error) {
         if(error.response) {
             yield put({
-                type: actionTypes.NEW_PRODUCT_ERROR,
+                type: actionTypes.GET_PRODUCT_ERROR,
                 message: error.response.data.message
             });
         }else{
             yield put({
-                type: actionTypes.NEW_PRODUCT_ERROR,
+                type: actionTypes.GET_PRODUCT_ERROR,
                 message: "Unable connect to server"
             });
         }
@@ -80,7 +80,7 @@ export function* _getProducts(payload) {
 };
 
 export function* _deleteProduct(payload) {
-    const config = {...payload.config, url: url + "delete-product/" + payload.data};
+    const config = {...payload.config, url: url + "delete-product/" + payload.params};
     try {
         const response = yield call(async () => {
             const res = await axios(config);
@@ -96,12 +96,70 @@ export function* _deleteProduct(payload) {
     }catch (error) {
         if(error.response) {
             yield put({
-                type: actionTypes.NEW_PRODUCT_ERROR,
+                type: actionTypes.DELETE_PRODUCT_ERROR,
                 message: error.response.data.message
             });
         }else{
             yield put({
-                type: actionTypes.NEW_PRODUCT_ERROR,
+                type: actionTypes.DELETE_PRODUCT_ERROR,
+                message: "Unable connect to server"
+            });
+        }
+    }
+};
+
+export function* _getDistrict(payload) {
+    const config = {...payload.config, url: url + "get-district"};
+    try {
+        const response = yield call(async () => {
+            const res = await axios(config);
+            return res;
+        });
+        yield put({
+            type: actionTypes.GET_DISTRICT_SUCCESS,
+            data: response.data
+        });
+        yield put({
+            type: actionTypes.ZONE_RESET
+        });
+    }catch (error) {
+        if(error.response) {
+            yield put({
+                type: actionTypes.GET_DISTRICT_ERROR,
+                message: error.response.data.message
+            });
+        }else{
+            yield put({
+                type: actionTypes.GET_DISTRICT_ERROR,
+                message: "Unable connect to server"
+            });
+        }
+    }
+};
+
+export function* _getVillage(payload) {
+    const config = {...payload.config, url: url + "get-village/" + payload.params};
+    try {
+        const response = yield call(async () => {
+            const res = await axios(config);
+            return res;
+        });
+        yield put({
+            type: actionTypes.GET_VILLAGE_SUCCESS,
+            data: response.data
+        });
+        yield put({
+            type: actionTypes.ZONE_RESET
+        });
+    }catch (error) {
+        if(error.response) {
+            yield put({
+                type: actionTypes.GET_VILLAGE_ERROR,
+                message: error.response.data.message
+            });
+        }else{
+            yield put({
+                type: actionTypes.GET_VILLAGE_ERROR,
                 message: "Unable connect to server"
             });
         }

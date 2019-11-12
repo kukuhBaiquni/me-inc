@@ -1,6 +1,20 @@
 import React, { PureComponent } from "react";
 import { Modal, Button, Select, Input, Row, Col, Radio, AutoComplete, Icon } from "antd";
-import { debounce } from "throttle-debounce";
+
+const initialData = {
+    firstName: "",
+    lastName: "",
+    gender: "MALE",
+    address: {
+        street: "",
+        district: "",
+        village: "",
+        zone: "",
+        path: ""
+    },
+    phone: "",
+    group: ""
+};
 
 export default class ModalCustomer extends PureComponent {
     constructor(props) {
@@ -8,52 +22,99 @@ export default class ModalCustomer extends PureComponent {
         this.state = {
             dataSource: [],
             formControl: {
-                customerName: "",
-                searchBy: "name",
-                status: "success",
-                paymentType: "cash",
-                address: "",
-                items: [{
-
-                }]
-            }
+                ...initialData
+            },
+            errors: []
         }
-    };
-
-    componentWillMount() {
-        this._debounce = debounce(500, this._debounce);
-    };
-
-    _debounce = () => {
-        console.log("Galat")
     };
 
     _onChange = (type, evt) => {
         const { formControl } = this.state;
-        this.setState({
-            formControl: Object.assign({}, formControl, {
-                [type]: evt.target.value
-            })
-        });
+        const value = typeof evt === "string" ? evt : evt.target.value;
+        if(type === "phone") {
+            if(!isNaN(value)) {
+                if(parseInt(value, 10) >= 0 && value[0] === "0") {
+                    this.setState({
+                        formControl: Object.assign({}, formControl, {
+                            [type]: value
+                        })
+                    });
+                }else{
+                    if(value === "") {
+                        this.setState({
+                            formControl: Object.assign({}, formControl, {
+                                [type]: value
+                            })
+                        });
+                    }
+                }
+            }
+        }else{
+            if(type.includes("a.")) {
+                if(type === "a.district") {
+                    this.setState({
+                       formControl: Object.assign({}, formControl, {
+                            address: {
+                                ...formControl.address,
+                                [type.replace("a.", "")]: value,
+                                village: ""
+                            }
+                        })
+                    });
+                }else{
+                    this.setState({
+                        formControl: Object.assign({}, formControl, {
+                            address: {
+                                ...formControl.address,
+                                [type.replace("a.", "")]: value
+                            }
+                        })
+                    });
+                }
+            }else{
+                if(type === "group") {
+                    this.setState({
+                        formControl: Object.assign({}, formControl, {
+                            [type]: evt
+                        })
+                    });
+                }else{
+                    this.setState({
+                        formControl: Object.assign({}, formControl, {
+                            [type]: value
+                        })
+                    });
+                }
+            }
+        }      
+    };
+
+    _getZone = (type) => {
+        const { formControl } = this.state;
+        const { zone, getZone } = this.props;
+        if(zone[type].length === 0 || formControl.address.village === "") {
+            if(type === "village") {
+                const id = zone.district.filter(x => x.nama_kecamatan === formControl.address.district)[0].kode_kecamatan;
+                getZone(type, id);
+            }else{
+                getZone(type);
+            }
+        }
+    };
+
+    _onSubmit = () => {
+        this.props.onSubmit(this.state.formControl);
     };
 
     _closeModal = () => this.props.closeModal();
 
-    _onSearch = query => {
-        this._debounce(query);
-    };
-
-    _onSelect = (value, opt) => {
-        console.log(value, opt)
-    };
-
     render() {
-        const { onSubmit, closeModal, isVisible, loading } = this.props;
-        const { dataSource, formControl } = this.state;
+        const { onSubmit, closeModal, isVisible, loading, zone } = this.props;
+        const { errors, formControl } = this.state;
         return (
             <Modal
                 visible={isVisible}
-                title="NEW TRANSACTION"
+                title="NEW CUSTOMER"
                 onOk={onSubmit}
                 onCancel={closeModal}
                 width="45%"
@@ -62,106 +123,170 @@ export default class ModalCustomer extends PureComponent {
                         Cancel
                     </Button>,
                     <Button key="save" style={{ backgroundColor: "green", color: "white" }} loading={loading} onClick={onSubmit} >
-                        Save
+                        Create
                     </Button>
                 ]}
             >
                 <Row>
-                    <label>Customer Name</label>
+                    <label>First Name</label>
+                </Row>
+                <Row>
+                    <Input value={formControl.firstName} onChange={(x) => this._onChange("firstName", x)} maxLength={20} className="product-qty" />
+                </Row>
+                <Row>
+                    <label>Last Name</label>
+                </Row>
+                <Row>
+                    <Input value={formControl.lastName} onChange={(x) => this._onChange("lastName", x)} maxLength={20} className="product-qty" />
+                </Row>
+                <Row>
+                    <label>Gender</label>
                 </Row>
                 <Row style={{ margin: "5px 0" }}>
-                    <Radio.Group onChange={(x) => this._onChange("searchBy", x)} value={formControl.searchBy}>
-                        <Radio value="name">Search by Name</Radio>
-                        <Radio value="address">Search by Address</Radio>
+                    <Radio.Group value={formControl.gender} onChange={(x) => this._onChange("gender", x)}>
+                        <Radio value="MALE">Male</Radio>
+                        <Radio value="FEMALE">Female</Radio>
                     </Radio.Group>
                 </Row>
-                <Row>
-                    <AutoComplete
-                        dataSource={dataSource}
-                        style={{ width: "100%" }}
-                        className="autocomplete-customer"
-                        onSelect={this._onSelect}
-                        onSearch={this._onSearch}
-                    >
-                        <Input value={formControl.customerName} onChange={(x) => this._onChange("customerName", x)} prefix={<Icon type="search" />} />
-                    </AutoComplete>
+                <Row style={{marginTop: 15}}>
+                    <label>Address - Street</label>
                 </Row>
                 <Row>
-                    <label>Status</label>
-                </Row>
-                <Row style={{ margin: "5px 0" }}>
-                    <Radio.Group value={formControl.status} onChange={(x) => this._onChange("status", x)}>
-                        <Radio value="success">Success</Radio>
-                        <Radio value="pending">Pending</Radio>
-                        <Radio value="process">Process</Radio>
-                    </Radio.Group>
+                    <Input 
+                        placeholder="Jl. Kaki No.121 Rt.02/Rt.08" 
+                        value={formControl.address.street}
+                        onChange={(x) => this._onChange("a.street", x)}
+                        style={{width: "70%"}} 
+                        className="product-qty" 
+                    />
                 </Row>
                 <Row>
-                    <label>Payment Type</label>
+                    <Col md={10}>
+                        <label>Address - District</label>
+                    </Col>
+                    <Col md={1} />
+                    <Col md={10}>
+                        <label>Address - Village</label>
+                    </Col>
                 </Row>
-                <Row style={{margin: "5px 0"}}>
-                    <Radio.Group value={formControl.paymentType} onChange={(x) => this._onChange("paymentType", x)}>
-                        <Radio value="cash">Cash</Radio>
-                        <Radio value="debt">Debt</Radio>
-                    </Radio.Group>
+                <Row>
+                    <Col md={10}>
+                        <Select 
+                            value={formControl.address.district}
+                            className="select-product"
+                            showSearch
+                            onFocus={() => this._getZone("district")}
+                            placeholder="Select a person"
+                            optionFilterProp="children"
+                            onChange={(x) => this._onChange("a.district", x)}
+                            style={{width: "100%", marginBottom: 10}}
+                            filterOption={(input, option) =>
+                            option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                            }
+                        >
+                            {
+                                zone.district.length > 0 &&
+                                zone.district.map((x, i) => (
+                                    <Select.Option key={i} value={x.nama_kecamatan}>{x.nama_kecamatan}</Select.Option>
+                                ))
+                            }
+                        </Select>
+                    </Col>
+                    <Col md={1} />
+                    <Col md={10}>
+                        <Select 
+                            value={formControl.address.village} 
+                            className="select-product"
+                            showSearch
+                            disabled={formControl.address.district === ""}
+                            onFocus={() => this._getZone("village")}
+                            placeholder="Select a person"
+                            optionFilterProp="children"
+                            onChange={(x) => this._onChange("a.village", x)}
+                            style={{width: "100%", marginBottom: 10}}
+                            filterOption={(input, option) =>
+                            option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                            }
+                        >
+                            {
+                                zone.village.length > 0 &&
+                                zone.village.map((x, i) => (
+                                    <Select.Option key={i} value={x.nama_kelurahan}>{x.nama_kelurahan}</Select.Option>
+                                ))
+                            }
+                        </Select>
+                    </Col>
                 </Row>
-                <Row style={{ margin: "10px 0" }}>
-                    <label>Detail items</label>
+                <Row>
+                    <Col md={10}>
+                        <label>Address - Zone</label>
+                    </Col>
+                    <Col md={1} />
+                    <Col md={10}>
+                        <label>Address - Path</label>
+                    </Col>
                 </Row>
-                <Row className="row-loop">
-                    <Col md={1}>
-                        <label>1</label>
-                    </Col>
-                    <Col md={5}>
-                        <Row>
-                            <label>Product Name</label>
-                        </Row>
-                        <Row>
-                            <Select id="productName" defaultValue="lucy" className="select-product" >
-                                <Select.Option value="name">Air Gabon</Select.Option>
-                                <Select.Option value="lucy">Air Mesir</Select.Option>
-                                <Select.Option value="Yiminghe">Air Gunung </Select.Option>
-                            </Select>
-                        </Row>
+                <Row>
+                    <Col md={10}>
+                        <Input 
+                            style={{width: "100%"}} 
+                            value={formControl.address.zone}
+                            onChange={(x) => this._onChange("a.zone", x)}
+                            maxLength={20} 
+                            className="product-qty" 
+                        />   
                     </Col>
                     <Col md={1} />
-                    <Col md={2}>
-                        <Row>
-                            <label>Quantity</label>
-                        </Row>
-                        <Row>
-                            <Input defaultValue="" maxLength={2} className="product-qty" />
-                        </Row>
+                    <Col md={10}>
+                        <Input 
+                            style={{width: "100%"}} 
+                            value={formControl.address.path}
+                            onChange={(x) => this._onChange("a.path", x)}
+                            maxLength={20} 
+                            className="product-qty" 
+                        />   
+                    </Col>
+                </Row>
+                <Row>
+                    <Col md={10}>
+                        <label>Phone</label>
                     </Col>
                     <Col md={1} />
-                    <Col md={5}>
-                        <Row>
-                            <label>Price</label>
-                        </Row>
-                        <Row>
-                            <Input disabled defaultValue="" maxLength={2} className="product-qty" />
-                        </Row>
+                    <Col md={10}>
+                        <label>Group</label>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col md={10}>
+                        <Input 
+                            onChange={(x) => this._onChange("phone", x)} 
+                            style={{width: "100%"}} 
+                            value={formControl.phone} 
+                            maxLength={13} 
+                            className="product-qty" 
+                        />
                     </Col>
                     <Col md={1} />
-                    <Col md={5}>
-                        <Row>
-                            <label>Subtotal</label>
-                        </Row>
-                        <Row>
-                            <Input disabled defaultValue="" maxLength={2} className="product-qty" />
-                        </Row>
-                    </Col>
-                    <Col md={1} />
-                    <Col md={2}>
-                        <Row>
-                            <label>Action</label>
-                        </Row>
-                        <Row>
-                            <Button style={{ margin: "5px 0" }} type="danger">Delete</Button>
-                        </Row>
+                    <Col md={10}>
+                        <Select  
+                            value={formControl.group}
+                            className="select-product"
+                            showSearch
+                            placeholder="Select a person"
+                            optionFilterProp="children"
+                            onChange={(x) => this._onChange("group", x)}
+                            style={{width: "100%", marginBottom: 10}}
+                            filterOption={(input, option) =>
+                            option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                            }
+                        >
+                                <Select.Option value="1">Air Gabon</Select.Option>
+                                <Select.Option value="2">Air Mesir</Select.Option>
+                                <Select.Option value="3">Air Gunung </Select.Option>
+                        </Select>
                     </Col>
                 </Row>
             </Modal>
         );
     }
-}
+};

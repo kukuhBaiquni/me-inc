@@ -5,7 +5,9 @@ import {
     getProducts,
     deleteProduct,
     getDistrict,
-    getVillage
+    getVillage,
+    getCustomer,
+    newCustomer
 } from "./watcher";
 
 export default function* rootSaga() {
@@ -15,6 +17,8 @@ export default function* rootSaga() {
         getProducts(),
         deleteProduct(),
         getDistrict(),
-        getVillage()
+        getVillage(),
+        getCustomer(),
+        newCustomer()
     ]);
 };

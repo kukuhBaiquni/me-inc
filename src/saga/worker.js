@@ -165,3 +165,61 @@ export function* _getVillage(payload) {
         }
     }
 };
+
+export function* _getCustomer(payload) {
+    const config = {...payload.config, url: url + "get-customer"};
+    try {
+        const response = yield call(async () => {
+            const res = await axios(config);
+            return res;
+        });
+        yield put({
+            type: actionTypes.GET_CUSTOMER_SUCCESS,
+            data: response.data
+        });
+        yield put({
+            type: actionTypes.CUSTOMER_RESET
+        });
+    }catch (error) {
+        if(error.response) {
+            yield put({
+                type: actionTypes.GET_CUSTOMER_ERROR,
+                message: error.response.data.message
+            });
+        }else{
+            yield put({
+                type: actionTypes.GET_CUSTOMER_ERROR,
+                message: "Unable connect to server"
+            });
+        }
+    }
+};
+
+export function* _newCustomer(payload) {
+    const config = {...payload.config, url: url + "new-customer"};
+    try {
+        const response = yield call(async () => {
+            const res = await axios(config);
+            return res;
+        });
+        yield put({
+            type: actionTypes.NEW_CUSTOMER_SUCCESS,
+            data: response.data
+        });
+        yield put({
+            type: actionTypes.CUSTOMER_RESET
+        });
+    }catch (error) {
+        if(error.response) {
+            yield put({
+                type: actionTypes.NEW_CUSTOMER_ERROR,
+                message: error.response.data.message
+            });
+        }else{
+            yield put({
+                type: actionTypes.NEW_CUSTOMER_ERROR,
+                message: "Unable connect to server"
+            });
+        }
+    }
+};

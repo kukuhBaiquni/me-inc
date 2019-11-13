@@ -29,19 +29,25 @@ class Products extends PureComponent {
     };
 
     componentDidMount() {
-        const { dispatch, products } = this.props;
+        const { products } = this.props;
         if(products.data.length === 0) {
-            dispatch({
-                type: actionType.GET_PRODUCT_REQUEST,
-                config: {
-                    methhod: "get",
-                    headers: {
-                        "Accept": "application/json;utf-8"
-                    }
-                }
-            });
+            this._getProducts();
         }
     };
+    
+    _getProducts = () => {
+        const { dispatch } = this.props;
+        dispatch({
+            type: actionType.GET_PRODUCT_REQUEST,
+            config: {
+                methhod: "get",
+                headers: {
+                    "Accept": "application/json;utf-8"
+                }
+            }
+        });
+
+    }
 
     _onChange = (type, evt) => {
         const { formControl } = this.state;

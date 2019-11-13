@@ -10,7 +10,7 @@ body {
     .content-wrapper {
         padding-top: 50px;
         margin: auto;
-        width: 90%;
+        width: 65%;
         font-size: 22px;
         color: white;
         font-family: $bold;
@@ -51,14 +51,14 @@ body {
             color: white;
             background-color: $primary;
             font-family: $bold;
-            font-size: 20px;
+            font-size: 16px;
             text-align: center;
         }
         tr {
             text-align: center;
             color: white;
             font-family: $regular;
-            font-size: 18px;
+            font-size: 16px;
             cursor: pointer;
             animation-name: fading;
             animation-duration: 1s;
@@ -101,7 +101,14 @@ body {
         }
     }
 }
-
+.invalid-input {
+    margin-top: -8px;
+    color: $error;
+    font-size: 13px;
+    font-family: $regular;
+    animation-name: fading;
+    animation-duration: 1s;
+}
 .ant-pagination-total-text {
     font-size: 18px;
     color: white;
@@ -129,7 +136,8 @@ body {
             animation-duration: 0.5s;
         }
         table{
-            margin: 10px 0;;
+            margin: 10px 0;
+            font-family: $regular;
         }
         th {
             color: white;

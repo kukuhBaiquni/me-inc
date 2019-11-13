@@ -1,6 +1,6 @@
 import React, { PureComponent } from "react";
 import "./Customer.scss";
-import { Table, Button, Select, Col, Row, Input } from "antd";
+import { Table, Button, Select, Col, Row, Input, message } from "antd";
 import moment from "moment";
 import ModalDetails from "./ModalDetails";
 import ModalCustomer from "./ModalCustomer";
@@ -16,15 +16,44 @@ class Customer extends PureComponent {
             isModalCreateVisible: false,
             loading: false,
             details: null,
+            customData: []
         }
+    };
+
+    componentDidMount() {
+        const { customers } = this.props;
+        if(customers.data.length === 0) {
+            this._getCustomer();
+        }
+    };
+
+    _getCustomer = () => {
+        const { dispatch } = this.props;
+        dispatch({
+            type: actionType.GET_CUSTOMER_REQUEST,
+            config: {
+                method: "get",
+                headers: {
+                    "Accepth": "application/json;utf-8"
+                }
+            }
+        });
     };
 
     _closeDetailModal = () => this.setState({isModalDetailsVisible: false});
     _showDetailModal = () => this.setState({isModalDetailsVisible: true});
     _closeTransactionModal = () => this.setState({isModalCreateVisible: false});
     _showTransactionModal = () => this.setState({isModalCreateVisible: true});
+
     _onSubmit = (data) => {
-        console.log(data)
+        const { dispatch } = this.props;
+        dispatch({
+            type: actionType.NEW_CUSTOMER_REQUEST,
+            config: {
+                method: "post",
+                data
+            }
+        });
         this.setState({ isModalDetailsVisible: false });
     };
 
@@ -46,14 +75,31 @@ class Customer extends PureComponent {
         });
     };
 
+    componentDidUpdate(prevProps) {
+        const { customers } = this.props;
+        if(prevProps.customers.success !== customers.success) {
+            if(customers.success) {
+                let data = [];
+                customers.data.map((x, i)=> data.push({...x, key: i + 1}));
+                this.setState({customData: data});
+                message.success(customers.message, 1);
+            }
+        }
+        if(prevProps.customers.error !== customers.error) {
+            if(customers.error) {
+                message.error(customers.message, 1);
+            }
+        }
+    };
+
     _setModalData = (evt, data, index) => {
         this.setState({details: data});
         this._showDetailModal();
     };
     
     render() {
-        const { isModalDetailsVisible, loading, details, isModalCreateVisible } = this.state;
-        const { zone } = this.props;
+        const { isModalDetailsVisible, loading, details, isModalCreateVisible, customData } = this.state;
+        const { zone, customers } = this.props;
         return (
             <div className="pos-main">
                 <ModalDetails
@@ -70,6 +116,7 @@ class Customer extends PureComponent {
                     loading={loading}
                     getZone={this._getZone}
                     zone={zone}
+                    trill={customers.data.length}
                 />
                 <div className="content-wrapper">
                     Customer List
@@ -88,7 +135,7 @@ class Customer extends PureComponent {
                                             <Select.Option value="address">Phone</Select.Option>
                                         </Select>
                                     </Col>
-                                    <Col md={4}>   
+                                    <Col md={7}>   
                                         <Input allowClear={true} placeholder="Search Customer.." />
                                     </Col>
                                     <Col md={2}>
@@ -109,7 +156,7 @@ class Customer extends PureComponent {
                     <Table
                         bordered={true}
                         columns={columns}
-                        dataSource={data}
+                        dataSource={customData}
                         pagination={{
                             defaultPageSize: 20,
                             showSizeChanger: true,
@@ -149,7 +196,8 @@ const columns = [
     {
         title: "Join Date",
         dataIndex: "join",
-        key: "join"
+        key: "join",
+        render: date => moment(date).format("DD MMM YYYY")
     },
     {
         title: "Address",
@@ -172,18 +220,3 @@ const columns = [
         key: "group"
     },
 ];
-
-const data = Array(1120).fill("Q").map((x, i) => {
-    return {
-        key: i + 1,
-        firstName: "Markonah",
-        lastName: "Gabon",
-        join: "Yesterday",
-        address: {
-            street: "Jl. Gabon Master Dewa Tjurut Pertjauan No.990 Rt.01/Rw.03",
-            zoneCode: "QWEASD"
-        },
-        phone: "08123456789",
-        group: "CB1"
-    }
-});

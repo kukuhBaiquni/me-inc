@@ -10,7 +10,7 @@ body {
     .content-wrapper {
         padding-top: 50px;
         margin: auto;
-        width: 90%;
+        width: 65%;
         font-size: 22px;
         color: white;
         font-family: $bold;
@@ -51,14 +51,14 @@ body {
             color: white;
             background-color: $primary;
             font-family: $bold;
-            font-size: 20px;
+            font-size: 16px;
             text-align: center;
         }
         tr {
             text-align: center;
             color: white;
             font-family: $regular;
-            font-size: 18px;
+            font-size: 16px;
             cursor: pointer;
             animation-name: fading;
             animation-duration: 1s;
@@ -70,7 +70,6 @@ body {
         .filter-box {
             margin-top: 20px;
             background-color: white;
-            border-radius: 5px;
             color: $dark;
             padding: 8px 18px;
             font-family: $regular;
@@ -131,6 +130,7 @@ body {
         }
         table{
             margin: 10px 0;
+            font-family: $regular;
         }
         th {
             color: white;
@@ -148,7 +148,8 @@ body {
             animation-duration: 1s;
         }
         input {
-            margin: 5px 0;
+            margin-bottom: 15px;
+            width: 40%;
         }
         input:not([type="radio"]) {
             animation-name: fading;

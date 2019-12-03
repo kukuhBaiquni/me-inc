@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import "../style/menu.css";
+// import "../../style/menu.css";
+import "./Overview.scss";
 import { Row, Col, Icon, Dropdown, Menu, Progress, Select } from 'antd';
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
@@ -13,7 +14,7 @@ const statisticLooper = [
     {icon: "shopping-cart", title: "PENJUALAN", value: "900", useProgress: false},
 ]
 
-export default class Dashboard extends Component {
+export default class Overview extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -38,6 +39,7 @@ export default class Dashboard extends Component {
         );
         return (
             <div className="view-container">
+                OVERVIEW
                 <h2>Statistic Overview</h2>
                 <Row type="flex" justify="space-between" style={{marginTop: "10px", marginBottom: "10px"}}>
                     {
@@ -57,7 +59,7 @@ export default class Dashboard extends Component {
                                                 </Col>
                                             </Row>
                                             <Row type="flex" align="middle" style={{marginTop: "14px"}}>
-                                                <Icon type={widget.icon} style={{fontSize: "38px", color: "#1890ff"}} />
+                                                <Icon type={widget.icon} className="icon-box" />
                                                 <span className="o-statistic-value">{widget.value}</span>
                                             </Row>
                                             <Row style={{marginTop: "18px"}}>
@@ -147,14 +149,14 @@ const Comparison = (props) => {
     return(
         <>
             <Row>
-                <i>Comparison vs Yesterday</i>
+                <p>Comparison vs Yesterday</p>
             </Row>
             <Row>
-                <Col span={12} style={{marginTop: "5px"}}>
+                <Col className="rrc" span={12} style={{marginTop: "5px"}}>
                     <Icon type="arrow-down" style={{color: "red", marginRight: "3px"}} />
                     -22% (Fall)
                 </Col>
-                <Col span={12} style={{marginTop: "5px"}}>
+                <Col className="rrc" span={12} style={{marginTop: "5px"}}>
                     <Icon type="arrow-up" style={{color: "green", marginRight: "3px"}} />
                     +43% (Raise)
                 </Col>
@@ -166,7 +168,7 @@ const Comparison = (props) => {
 const ProgressBar = (props) => {
     return(
         <Col span={24}>
-            <i>Remaining</i>
+            <p>Remaining</p>
             <Progress percent={45} />
         </Col>
     )
@@ -174,4 +176,3 @@ const ProgressBar = (props) => {
 
 let data = [];
 Array(31).fill('Gabon').map((x, i) => data.push({name: `Day ${i+1}`, current: Number(`${Math.ceil(Math.random() * 100)}`), past: Number(`${Math.ceil(Math.random() * 100)}`),  amt: 100}));
-

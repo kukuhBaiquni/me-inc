@@ -1,0 +1,202 @@
+@import "../../assets/variable.scss";
+
+body {
+    background-color: $dark;
+}
+
+.highlight {
+    color: $dark;
+    background-color: $highlight;
+}
+
+.pos-main {
+    padding-top: 70px;
+    height: 100%;
+    .content-wrapper {
+        padding-top: 50px;
+        margin: auto;
+        width: 65%;
+        font-size: 22px;
+        color: white;
+        font-family: $bold;
+        .header-ancestor {
+            background-color: white;
+            border-radius: 5px;
+            color: white;
+            margin-top: 10px;
+            .header-ancestor-title {
+                border-top-left-radius: 5px;
+                border-top-right-radius: 5px;
+                background-color: $primary;
+                display: flex;
+                padding: 8px 18px;
+            }
+        }
+        .new-transaction {
+            background-color: $primary;
+            color: white;
+            font-family: $bold;
+            letter-spacing: 1;
+            border-radius: 5px;
+            font-size: 18px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 45px;
+            margin-top: 15px;
+            cursor: pointer;
+        }
+        .new-transaction:hover {
+            background-color: $primaryDarker;
+        }
+        table {
+            margin-top: 15px;
+        }
+        th {
+            color: white;
+            background-color: $primary;
+            font-family: $bold;
+            font-size: 16px;
+            text-align: center;
+        }
+        tr {
+            text-align: center;
+            color: white;
+            font-family: $regular;
+            font-size: 16px;
+            cursor: pointer;
+            animation-name: fading;
+            animation-duration: 1s;
+        }
+        tr:hover {
+            background-color: $primary;
+            color: $dark;
+        }
+        .filter-box {
+            margin-top: 20px;
+            background-color: white;
+            color: $dark;
+            padding: 8px 18px;
+            font-family: $regular;
+            font-size: 18px;
+            .select-date-title {
+                color: $dark;
+                font-family: $regular;
+                font-size: 16px;
+            }
+            .datepicker-container {
+                margin-top: 5px;
+                animation-name: fading;
+                animation-duration: 1s;
+                margin-bottom: 15px;
+            }
+            .radio-status span {
+                color: $dark;
+                font-family: $regular;
+            }
+            .filter-row div {
+                margin-right: 15px;
+                animation-name: fading;
+                animation-duration: 1s;
+                .select-search-type {
+                    font-family: $regular;
+                    width: 100%;
+                }
+            }
+        }
+    }
+}
+.invalid-input {
+    margin-top: -8px;
+    color: $error;
+    font-size: 13px;
+    font-family: $regular;
+    animation-name: fading;
+    animation-duration: 1s;
+}
+.ant-pagination-total-text {
+    font-size: 18px;
+    color: white;
+    font-family: $regular;
+}
+
+.ant-modal-content {
+    .ant-modal-header {
+        background-color: $primary;
+        .ant-modal-title {
+            color: white;
+            font-family: $bold;
+            font-size: 20px;
+        }
+    }
+    .ant-modal-body {
+        label {
+            font-family: $regular;
+            color: $dark
+        }
+        p {
+            font-family: $bold;
+            margin-bottom: 10px;
+            animation-name: fading;
+            animation-duration: 0.5s;
+        }
+        table{
+            margin: 10px 0;
+            font-family: $regular;
+        }
+        th {
+            color: white;
+            background-color: $primary;
+            font-family: $bold;
+            font-size: 14px;
+            text-align: center;
+        }
+        tr {
+            text-align: center;
+            font-family: $regular;
+            color: $dark;
+            font-size: 14px;
+            animation-name: fading;
+            animation-duration: 1s;
+        }
+        input {
+            margin-bottom: 15px;
+            width: 40%;
+        }
+        input:not([type="radio"]) {
+            animation-name: fading;
+            animation-duration: 0.5s;
+        }
+        .row-loop {
+            margin: 10px 0;
+            animation-name: fading;
+            animation-duration: 1s;
+            label {
+                font-size: 14px;
+            }
+            .select-product {
+                margin: 5px 0;
+                font-family: $regular;
+                width: 100%;
+            }
+            .product-qty {
+                width: 100%;
+                margin: 5px 0;
+            }
+        }
+        .inliner {
+            display: flex;
+            justify-content: space-between;
+        }
+        color: $primary;
+        font-size: 16px;
+    }
+    .ant-modal-footer {
+        font-family: $bold;
+    }
+}
+
+@keyframes fading {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}

@@ -1,0 +1,55 @@
+@import url('https://fonts.googleapis.com/css?family=Asap&display=swap');
+
+@font-face {
+  font-family: 'Regular';
+  src: url('./fonts/Regular.ttf') format('truetype')
+}
+
+@font-face {
+  font-family: 'Italic';
+  src: url('./fonts/Italic.otf') format('otf')
+}
+
+@font-face {
+  font-family: 'Bold';
+  src: url('./fonts/Bold.ttf') format('truetype')
+}
+
+@font-face {
+  font-family: 'BoldItalic';
+  src: url('./fonts/BoldItalic.otf') format('otf')
+}
+
+@font-face {
+  font-family: 'Light';
+  src: url('./fonts/Light.ttf') format('truetype')
+}
+
+@font-face {
+  font-family: 'LightItalic';
+  src: url('./fonts/LightItalic.otf') format('otf')
+}
+
+@font-face {
+  font-family: 'Price';
+  src: url('./fonts/Price.otf') format('otf')
+}
+
+$regular: "Regular";
+$italic: "Italic";
+$bold: "Bold";
+$boldItalic: "BoldItalic";
+$light: "Light";
+$lightItalic: "LightItalic";
+$price: "Price";
+
+$primary: #54b9fb;
+$primaryDarker: #1890ff;
+$error: #ff4a4a;
+$success: #65fa85;
+$warning: #fff569;
+$info: #7167ff;
+$dark: #4b4b4b;
+$highlight: #feef37;
+$gray: #c8c8c8;
+$lightgray: #e8e8e8;

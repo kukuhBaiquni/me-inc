@@ -1,9 +1,9 @@
-@import '~antd/dist/antd.css';
+/* @import '~antd/dist/antd.css'; */
 
 .view-container {
     width: calc(100% - 200px);
     margin-top: 54px;
-    margin-left: 200px;
+    margin: auto;
     overflow-x: hidden;
     padding: 24px 36px;
 }

@@ -5,8 +5,9 @@ import nanoid from "nanoid";
 import moment from "moment";
 import ModalDetails from "./ModalDetails";
 import ModalTransaction from "./ModalTransaction";
+import { connect } from "react-redux";
 
-export default class Pos extends PureComponent {
+class Pos extends PureComponent {
     constructor(props) {
         super(props)
         this.state = {
@@ -36,6 +37,7 @@ export default class Pos extends PureComponent {
     render() {
         const { isModalDetailsVisible, loading, details, filterByTime, filterType, isModalTransactionVisible } = this.state;
         const { RangePicker } = DatePicker;
+        const { customers, products } = this.props;
         return (
             <div className="pos-main">
                 <ModalDetails
@@ -50,7 +52,8 @@ export default class Pos extends PureComponent {
                     onSubmit={this._handleOk}
                     isVisible={isModalTransactionVisible}
                     loading={loading}
-                    data={details}
+                    customers={customers.data}
+                    products={products.data}
                 />
                 <div className="content-wrapper">
                     Transaction List
@@ -135,7 +138,7 @@ export default class Pos extends PureComponent {
     }
 };
 
-
+export default connect(state => state)(Pos)
 
 const columns = [
     {

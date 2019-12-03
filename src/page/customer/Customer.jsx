@@ -1,12 +1,12 @@
 import React, { PureComponent } from "react";
 import "./Customer.scss";
-import { Table, Button, Select, Col, Row, Input, message } from "antd";
-import moment from "moment";
+import { Table, Select, Col, Row, Input, message } from "antd";
 import ModalDetails from "./ModalDetails";
 import ModalCustomer from "./ModalCustomer";
 import { debounce } from "throttle-debounce";
 import * as actionType from "../../constant/actionTypes";
 import { connect } from "react-redux";
+import { customerColumn } from "../../constant/tableColumn";
 
 class Customer extends PureComponent {
     constructor(props) {
@@ -16,14 +16,26 @@ class Customer extends PureComponent {
             isModalCreateVisible: false,
             loading: false,
             details: null,
-            customData: []
+            customData: [],
+            formControl: {
+                searchBy: "name",
+                query: ""
+            },
+            tempData: [],
+            isFilterActive: false
         }
+        this._searchCustomer = debounce(500, this._searchCustomer);
     };
 
     componentDidMount() {
+        console.log(process.env)
         const { customers } = this.props;
         if(customers.data.length === 0) {
             this._getCustomer();
+        }else{
+            let data = [];
+            customers.data.map((x, i)=> data.push({...x, key: i + 1}));
+            this.setState({customData: data});
         }
     };
 
@@ -34,9 +46,59 @@ class Customer extends PureComponent {
             config: {
                 method: "get",
                 headers: {
-                    "Accepth": "application/json;utf-8"
+                    "Accept": "application/json;utf-8"
                 }
             }
+        });
+    };
+
+    _onChangeQuery = (evt) => {
+        const { formControl } = this.state;
+        const value = typeof evt === "string" ? evt : evt.target.value;
+        const type = typeof evt === "string" ? "searchBy" : "query";
+        this.setState({
+            formControl: Object.assign({}, formControl, {
+                [type]: value.toLowerCase()
+            })
+        });
+        this._searchCustomer();
+    };
+
+    _searchCustomer = () => {
+        const { searchBy, query } = this.state.formControl;
+        const { customData } = this.state;
+        this.setState({isFilterActive: true});
+        let result = [];
+        switch (searchBy) {
+            case "name":
+            result = customData.filter(x => `${x.firstName.toLowerCase()} ${x.lastName.toLowerCase()}`.includes(query));
+            this.setState({tempData: result});
+            break;
+
+            case "address.street" :
+            result = customData.filter(x => x.address.street.toLowerCase().includes(query));
+            this.setState({tempData: result});
+            break;
+
+            case "phone":
+            result = customData.filter(x => x.phone.includes(query));
+            this.setState({tempData: result});
+            break;
+
+            default:
+            this.setState({
+                tempData: []
+            });
+        }
+    };
+
+    _turnOffFilter = () => {
+        const { formControl } = this.state;
+        this.setState({
+            isFilterActive: false,
+            formControl: Object.assign({}, formControl, {
+                query: ""
+            })
         });
     };
 
@@ -68,8 +130,8 @@ class Customer extends PureComponent {
                 },
             },
             params: (
-                type === "district" 
-                ? "" 
+                type === "district"
+                ? ""
                 : id
             )
         });
@@ -96,9 +158,9 @@ class Customer extends PureComponent {
         this.setState({details: data});
         this._showDetailModal();
     };
-    
+
     render() {
-        const { isModalDetailsVisible, loading, details, isModalCreateVisible, customData } = this.state;
+        const { isModalDetailsVisible, loading, details, isModalCreateVisible, customData, formControl, tempData, isFilterActive } = this.state;
         const { zone, customers } = this.props;
         return (
             <div className="pos-main">
@@ -128,18 +190,14 @@ class Customer extends PureComponent {
                             <Col className="filter-box" md={24}>
                                 <Row className="filter-row">
                                     <Col md={4}>
-                                        <Select name="filterType" defaultValue="name" className="select-search-type">
+                                        <Select onChange={this._onChangeQuery} name="searchBy" value={formControl.searchBy} className="select-search-type">
                                             <Select.Option value="name">Name</Select.Option>
-                                            <Select.Option value="trx">Address</Select.Option>
-                                            <Select.Option value="Amount">Zone Code</Select.Option>
-                                            <Select.Option value="address">Phone</Select.Option>
+                                            <Select.Option value="address.street">Address</Select.Option>
+                                            <Select.Option value="phone">Phone</Select.Option>
                                         </Select>
                                     </Col>
-                                    <Col md={7}>   
-                                        <Input allowClear={true} placeholder="Search Customer.." />
-                                    </Col>
-                                    <Col md={2}>
-                                        <Button type="primary">Search</Button>
+                                    <Col md={7}>
+                                        <Input onChange={this._onChangeQuery} value={formControl.query} allowClear={true} placeholder="Search Customer.." />
                                     </Col>
                                 </Row>
                                 <Row style={{height: "5px"}} />
@@ -155,8 +213,8 @@ class Customer extends PureComponent {
                     </Row>
                     <Table
                         bordered={true}
-                        columns={columns}
-                        dataSource={customData}
+                        columns={customerColumn(formControl.searchBy, formControl.query, isFilterActive)}
+                        dataSource={isFilterActive ? tempData : customData}
                         pagination={{
                             defaultPageSize: 20,
                             showSizeChanger: true,
@@ -176,47 +234,3 @@ class Customer extends PureComponent {
 };
 
 export default connect(state => state)(Customer);
-
-const columns = [
-    {
-        title: "No",
-        dataIndex: "key",
-        key: "no"
-    },
-    {
-        title: "First Name",
-        dataIndex: "firstName",
-        key: "firstName"
-    },
-    {
-        title: "Last Name",
-        dataIndex: "lastName",
-        key: "lastName"
-    },
-    {
-        title: "Join Date",
-        dataIndex: "join",
-        key: "join",
-        render: date => moment(date).format("DD MMM YYYY")
-    },
-    {
-        title: "Address",
-        dataIndex: "address.street",
-        key: "address.street"
-    },
-    {
-        title: "Zone Code",
-        dataIndex: "address.zoneCode",
-        key: "address.zoneCode"
-    },
-    {
-        title: "Phone",
-        dataIndex: "phone",
-        key: "phone"
-    },
-    {
-        title: "Group",
-        dataIndex: "group",
-        key: "group"
-    },
-];

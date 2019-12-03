@@ -40,7 +40,7 @@ export default class ModalDetail extends PureComponent {
                         </Button>
                     ]}
                     >
-                    {
+                    {/* {
                         data &&
                         <>
                             <Row>
@@ -141,14 +141,14 @@ export default class ModalDetail extends PureComponent {
                                 ))
                             }
                         </>
-                    }
+                    } */}
                 </Modal>
             )
         }else{
             return(
                 <Modal
                     visible={isVisible}
-                    title="TRANSACTION DETAILS"
+                    title="CUSTOMER DETAILS"
                     onOk={onSubmit}
                     onCancel={closeModal}
                     width="45%"
@@ -164,14 +164,17 @@ export default class ModalDetail extends PureComponent {
                     {
                         data &&
                         <>
-                            <label>TRX</label>
-                            <p>{data.trx}</p>
-                            <label>Customer Name</label>
-                            <p>{data.name}</p>
-                            <label>Customer Address</label>
-                            <p>{data.address}</p>
-                            <label>Transaction Status</label>
-                            <p style={data.status ? {color: "green"} : {color: "orange"}}>{data.status ? "Success" : "Pending"}</p>
+                            <label>Full Name</label>
+                            <p>{data.firstName} {data.lastName}</p>
+                            <label>Gender</label>
+                            <p>{data.gender}</p>
+                            <label>Address</label>
+                            <p>{data.address.street} Kec.{data.address.district}/Kel.{data.address.village} Kota {data.address.city}</p>
+                            <label>Phone</label>
+                            <p>{data.phone}</p>
+                            <label>Group</label>
+                            <p>{data.group}</p>
+                            {/* <p style={data.status ? {color: "green"} : {color: "orange"}}>{data.status ? "Success" : "Pending"}</p>
                             <label>Detail items</label>
                             <Table
                                 bordered={true}
@@ -180,7 +183,7 @@ export default class ModalDetail extends PureComponent {
                                 pagination={false}
                             />
                             <label>Total</label>
-                            <p>{data.amount}</p>
+                            <p>{data.amount}</p> */}
                         </>
                     }
                 </Modal>

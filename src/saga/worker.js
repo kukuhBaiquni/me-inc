@@ -1,8 +1,7 @@
 import { put, call } from "redux-saga/effects";
 import * as actionTypes from "../constant/actionTypes";
 import axios from "axios";
-
-const url = "http://192.168.43.24:8080/api/v1/";
+import { url } from "../helpers/UrlPrefix";
 
 export function* _getData(payload) {
     const config = {...payload.config, url};
@@ -22,7 +21,7 @@ export function* _getData(payload) {
 };
 
 export function* _newProduct(payload) {
-    const config = {...payload.config, url: url + "new-product"};
+    const config = {...payload.config, url: url.API + "new-product"};
     try {
         const response = yield call(async () => {
             const res = await axios(config);
@@ -51,7 +50,7 @@ export function* _newProduct(payload) {
 };
 
 export function* _getProducts(payload) {
-    const config = {...payload.config, url: url + "get-products"};
+    const config = {...payload.config, url: url.API + "get-products"};
     try {
         const response = yield call(async () => {
             const res = await axios(config);
@@ -79,8 +78,37 @@ export function* _getProducts(payload) {
     }
 };
 
+export function* _editProduct(payload) {
+    const config = {...payload.config, url: url.API + "edit-product/" + payload.params};
+    try {
+        const response = yield call(async () => {
+            const res = await axios(config);
+            return res;
+        });
+        yield put({
+            type: actionTypes.EDIT_PRODUCT_SUCCESS,
+            data: response.data
+        });
+        yield put({
+            type: actionTypes.PRODUCT_RESET
+        });
+    }catch (error) {
+        if(error.response) {
+            yield put({
+                type: actionTypes.EDIT_PRODUCT_ERROR,
+                message: error.response.data.message
+            });
+        }else{
+            yield put({
+                type: actionTypes.EDIT_PRODUCT_ERROR,
+                message: "Unable connect to server"
+            });
+        }
+    }
+};
+
 export function* _deleteProduct(payload) {
-    const config = {...payload.config, url: url + "delete-product/" + payload.params};
+    const config = {...payload.config, url: url.API + "delete-product/" + payload.params};
     try {
         const response = yield call(async () => {
             const res = await axios(config);
@@ -109,7 +137,7 @@ export function* _deleteProduct(payload) {
 };
 
 export function* _getDistrict(payload) {
-    const config = {...payload.config, url: url + "get-district"};
+    const config = {...payload.config, url: url.API + "get-district"};
     try {
         const response = yield call(async () => {
             const res = await axios(config);
@@ -138,7 +166,7 @@ export function* _getDistrict(payload) {
 };
 
 export function* _getVillage(payload) {
-    const config = {...payload.config, url: url + "get-village/" + payload.params};
+    const config = {...payload.config, url: url.API + "get-village/" + payload.params};
     try {
         const response = yield call(async () => {
             const res = await axios(config);
@@ -167,7 +195,7 @@ export function* _getVillage(payload) {
 };
 
 export function* _getCustomer(payload) {
-    const config = {...payload.config, url: url + "get-customer"};
+    const config = {...payload.config, url: url.API + "get-customer"};
     try {
         const response = yield call(async () => {
             const res = await axios(config);
@@ -196,7 +224,7 @@ export function* _getCustomer(payload) {
 };
 
 export function* _newCustomer(payload) {
-    const config = {...payload.config, url: url + "new-customer"};
+    const config = {...payload.config, url: url.API + "new-customer"};
     try {
         const response = yield call(async () => {
             const res = await axios(config);

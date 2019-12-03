@@ -30,11 +30,12 @@ export default class Header extends Component {
                         menu.map((x, i) => (
                             <Link to={x.path} key={i}>
                                 <div className="menu-list">
+                                    <Icon type={x.icon} style={{marginRight: 8}} />
                                     {x.title}
                                 </div>
                             </Link>
                         ))
-                    }       
+                    }
                 </Drawer>
                 <div className="left-menu">
                     <Icon onClick={this._showDrawer} type="menu" style={{color: "white", fontSize: "24px"}} />

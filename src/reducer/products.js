@@ -61,6 +61,34 @@ export default function products(state = initialState, action) {
             message: action.message
         });
 
+        case actionTypes.EDIT_PRODUCT_REQUEST:
+        return Object.assign({}, state, {
+            success: false,
+            processing: true,
+            error: false,
+            message: action.message
+        });
+
+        case actionTypes.EDIT_PRODUCT_SUCCESS:
+        const index = state.data.map(x => x._id).indexOf(action.data.data._id);
+        let clone = [...state.data];
+        clone[index] = action.data.data;
+        return Object.assign({}, state, {
+            data: clone,
+            success: true,
+            processing: false,
+            error: false,
+            message: action.data.message
+        });
+
+        case actionTypes.EDIT_PRODUCT_ERROR:
+        return Object.assign({}, state, {
+            success: false,
+            processing: false,
+            error: true,
+            message: action.message
+        });
+
         case actionTypes.DELETE_PRODUCT_REQUEST:
         return Object.assign({}, state, {
             success: false,

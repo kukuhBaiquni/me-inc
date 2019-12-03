@@ -171,7 +171,10 @@ export default class ModalCustomer extends PureComponent {
         }
     };
 
-    _closeModal = () => this.props.closeModal();
+    _closeModal = () => {
+        this.setState({errors: []});
+        this.props.closeModal();
+    }
     _clearForm = () => this.setState({formControl: initialData});
 
     render() {

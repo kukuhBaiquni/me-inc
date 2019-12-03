@@ -1,10 +1,10 @@
-import React, { PureComponent } from "react";
+import React, { PureComponent, Fragment } from "react";
 import "./Products.scss";
 import { connect } from "react-redux";
-import { Row, Button, Input, Radio, Upload, Icon, message, Popconfirm } from "antd";
+import { Row, Button, Input, Radio, Upload, Icon, message, Popconfirm, Spin, Tooltip } from "antd";
 import * as actionType from "../../constant/actionTypes";
 import nanoid from "nanoid";
-import { imagePath } from "../../helpers/imagePath";
+import { url } from "../../helpers/UrlPrefix";
 import { createProductValidation as VALIDATION } from "../../helpers/Validation";
 
 const initialData = {
@@ -24,7 +24,9 @@ class Products extends PureComponent {
             },
             fileList: [],
             permissionKey: "",
-            errors: []
+            errors: [],
+            isEditing: false,
+            target: null
         };
     };
 
@@ -34,7 +36,7 @@ class Products extends PureComponent {
             this._getProducts();
         }
     };
-    
+
     _getProducts = () => {
         const { dispatch } = this.props;
         dispatch({
@@ -76,7 +78,7 @@ class Products extends PureComponent {
                     [type]: value
                 })
             });
-        }      
+        }
     };
 
     _uploadPhoto = file => {
@@ -137,33 +139,63 @@ class Products extends PureComponent {
         })
     };
 
+    _editData = (index) => {
+        this.setState({isEditing: true, target: index});
+    };
+
+    _cancelEdit = () => {
+        this.setState({isEditing: false, target: null});
+    };
+
+    _submitEdit = (target, value) => {
+        const { dispatch } = this.props;
+        dispatch({
+            type: actionType.EDIT_PRODUCT_REQUEST,
+            config: {
+                method: 'put',
+                data: {
+                    price: value
+                }
+            },
+            params: target.productId
+        });
+    };
+
     componentDidUpdate(prevProps) {
         const { products } = this.props;
         if(prevProps.products.success !== products.success) {
             if(products.success) {
+                this.setState({isEditing: false});
                 message.success(products.message, 1);
             }
         }
         if(prevProps.products.error !== products.error) {
             if(products.error) {
+                this.setState({isEditing: false});
                 message.error(products.message, 1);
             }
         }
     };
-    
 
     render() {
-        const { formControl, permissionKey, errors, fileList } = this.state;
+        const { formControl, permissionKey, errors, fileList, isEditing, target } = this.state;
         const { products } = this.props;
         return (
             <div className="products-main">
                 <div className="list-wrapper">
                     {products.data.length > 0 &&
                         products.data.map((data, i) => (
-                            <Renderer 
-                                key={i} 
+                            <Renderer
+                                key={i}
                                 data={data}
                                 deleteData={this._deleteData}
+                                isEditing={isEditing}
+                                editData={this._editData}
+                                cancelEdit={this._cancelEdit}
+                                target={target}
+                                index={i}
+                                submitEdit={this._submitEdit}
+                                updating={products.processing}
                             />
                         ))}
                     {products.data.length === 0 && (
@@ -221,10 +253,17 @@ class Products extends PureComponent {
 
 class Renderer extends PureComponent {
 
+    _editData = () => this.props.editData(this.props.index);
+    _cancelEdit = () => this.props.cancelEdit();
     _deleteData = () => this.props.deleteData(this.props.data);
+    _submitEdit = () => {
+        const { index } = this.props;
+        const value = document.getElementById("edit-price-" + index).value;
+        this.props.submitEdit(this.props.data, value);
+    };
 
     render() {
-        const { data } = this.props;
+        const { data, isEditing, index, target, updating } = this.props;
         return (
             <div className="list-style-wrapper">
                 <div className="list-style">
@@ -232,7 +271,7 @@ class Renderer extends PureComponent {
                     <div className="body">
                         <div className="left-side">
                             <div className="image-container">
-                                <img src={imagePath + data.photo} alt="galon" />
+                                <img src={url.IMAGE_PATH + data.photo} alt="galon" />
                             </div>
                         </div>
                         <div className="right-side">
@@ -257,7 +296,36 @@ class Renderer extends PureComponent {
                                 </div>
                             </div>
                             <div className="right-bottom">
-                                IDR {data.price.toLocaleString()},-
+                                {
+                                    (!isEditing || target !== index) &&
+                                    <Fragment>
+                                        IDR {data.price.toLocaleString()},-
+                                        <Button onClick={this._editData} type="primary" icon="edit">Edit</Button>
+                                    </Fragment>
+                                }
+                                {
+                                    isEditing && target === index &&
+                                    <Fragment>
+                                        <input autoFocus id={`edit-price-${index}`} defaultValue={data.price} />
+                                        {
+                                            updating &&
+                                            <div style={{marginTop: 10}}>
+                                                <Spin />
+                                            </div>
+                                        }
+                                        {
+                                            !updating &&
+                                            <Fragment>
+                                                <Tooltip placement="top" title="Cancel">
+                                                    <Button onClick={this._cancelEdit} type="danger" icon="stop" />
+                                                </Tooltip>
+                                                <Tooltip placement="top" title="Submit">
+                                                    <Button onClick={this._submitEdit} type="primary" icon="check-circle" />
+                                                </Tooltip>
+                                            </Fragment>
+                                        }
+                                    </Fragment>
+                                }
                             </div>
                         </div>
                     </div>
@@ -270,7 +338,7 @@ class Renderer extends PureComponent {
                             okType="danger"
                             cancelText="No"
                         >
-                            <Button type="danger">Delete</Button>
+                            <Button icon="delete" type="danger">Delete</Button>
                         </Popconfirm>
                     </div>
                 </div>

@@ -48,8 +48,7 @@ class Products extends PureComponent {
                 }
             }
         });
-
-    }
+    };
 
     _onChange = (type, evt) => {
         const { formControl } = this.state;

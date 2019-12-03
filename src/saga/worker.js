@@ -1,7 +1,8 @@
 import { put, call } from "redux-saga/effects";
 import * as actionTypes from "../constant/actionTypes";
 import axios from "axios";
-import { url } from "../helpers/UrlPrefix";
+
+const url = process.env.REACT_APP_BASE_URL;
 
 export function* _getData(payload) {
     const config = {...payload.config, url};
@@ -21,7 +22,7 @@ export function* _getData(payload) {
 };
 
 export function* _newProduct(payload) {
-    const config = {...payload.config, url: url.API + "new-product"};
+    const config = {...payload.config, url: url + "/new-product"};
     try {
         const response = yield call(async () => {
             const res = await axios(config);
@@ -50,7 +51,7 @@ export function* _newProduct(payload) {
 };
 
 export function* _getProducts(payload) {
-    const config = {...payload.config, url: url.API + "get-products"};
+    const config = {...payload.config, url: url + "/get-products"};
     try {
         const response = yield call(async () => {
             const res = await axios(config);
@@ -79,7 +80,7 @@ export function* _getProducts(payload) {
 };
 
 export function* _editProduct(payload) {
-    const config = {...payload.config, url: url.API + "edit-product/" + payload.params};
+    const config = {...payload.config, url: url + "/edit-product/" + payload.params};
     try {
         const response = yield call(async () => {
             const res = await axios(config);
@@ -108,7 +109,7 @@ export function* _editProduct(payload) {
 };
 
 export function* _deleteProduct(payload) {
-    const config = {...payload.config, url: url.API + "delete-product/" + payload.params};
+    const config = {...payload.config, url: url + "/delete-product/" + payload.params};
     try {
         const response = yield call(async () => {
             const res = await axios(config);
@@ -137,7 +138,7 @@ export function* _deleteProduct(payload) {
 };
 
 export function* _getDistrict(payload) {
-    const config = {...payload.config, url: url.API + "get-district"};
+    const config = {...payload.config, url: url + "/get-district"};
     try {
         const response = yield call(async () => {
             const res = await axios(config);
@@ -166,7 +167,7 @@ export function* _getDistrict(payload) {
 };
 
 export function* _getVillage(payload) {
-    const config = {...payload.config, url: url.API + "get-village/" + payload.params};
+    const config = {...payload.config, url: url + "/get-village/" + payload.params};
     try {
         const response = yield call(async () => {
             const res = await axios(config);
@@ -195,7 +196,7 @@ export function* _getVillage(payload) {
 };
 
 export function* _getCustomer(payload) {
-    const config = {...payload.config, url: url.API + "get-customer"};
+    const config = {...payload.config, url: url + "/get-customer"};
     try {
         const response = yield call(async () => {
             const res = await axios(config);
@@ -224,7 +225,7 @@ export function* _getCustomer(payload) {
 };
 
 export function* _newCustomer(payload) {
-    const config = {...payload.config, url: url.API + "new-customer"};
+    const config = {...payload.config, url: url + "/new-customer"};
     try {
         const response = yield call(async () => {
             const res = await axios(config);

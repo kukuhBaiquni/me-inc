@@ -28,7 +28,6 @@ class Customer extends PureComponent {
     };
 
     componentDidMount() {
-        console.log(process.env)
         const { customers } = this.props;
         if(customers.data.length === 0) {
             this._getCustomer();

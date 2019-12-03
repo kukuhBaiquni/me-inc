@@ -1,4 +1,4 @@
-import React, { PureComponent } from "react";
+import React, { PureComponent, Component } from "react";
 import {
     Modal,
     Button,
@@ -8,7 +8,9 @@ import {
     Col,
     Radio,
     AutoComplete,
-    Icon
+    InputNumber,
+    Icon,
+    Popconfirm
 } from "antd";
 import { debounce } from "throttle-debounce";
 
@@ -22,12 +24,13 @@ export default class ModalTransaction extends PureComponent {
                 searchBy: "name",
                 status: "success",
                 paymentType: "cash",
-                address: "",
+                address: "-",
                 instance: [
                     {
                         productName: "Select a product",
                         qty: 1,
-                        price: 0
+                        price: 0,
+                        subtotal: 0
                     }
                 ]
             },
@@ -76,9 +79,9 @@ export default class ModalTransaction extends PureComponent {
             });
         }
     };
-
+    
     _closeModal = () => this.props.closeModal();
-
+    
     _onSearch = query => {
         this._debounce(query);
     };
@@ -86,15 +89,57 @@ export default class ModalTransaction extends PureComponent {
     _onSelect = value => {
         const { formControl } = this.state;
         const parsed = value.split("-")[0].trim();
+        const address = value.split("-")[1].trim();
         let clone = { ...formControl };
         clone.customerName = parsed;
+        clone.address = address;
+        this.setState({ formControl: clone });
+    };
+    
+    _onSubmit = () => {};
+    
+    _instanceChange = (type, value, index) => {
+        const { formControl } = this.state;
+        const { products } = this.props;
+        let clone = {...formControl};
+        if(type === "productName") {
+            const productName = value.split("-")[0];
+            const id = value.split("-")[1];
+            const data = products.filter(x => x._id === id)[0];
+            clone.instance[index].productName = productName;
+            clone.instance[index].price = data.price;
+            clone.instance[index].subtotal = data.price * Number(clone.instance[index].qty);
+            this.setState({
+                formControl: clone
+            });
+        }else{
+            clone.instance[index].qty = value;
+            clone.instance[index].subtotal = value * clone.instance[index].price;
+            this.setState({
+                formControl: clone
+            });
+        }
+    };
+
+    _newInstance = () => {
+        const { formControl } = this.state;
+        let clone = {...formControl};
+        const instance = {
+            productName: "Select a product",
+            qty: 1,
+            price: 0,
+            subtotal: 0
+        };
+        clone.instance.push(instance);
         this.setState({ formControl: clone });
     };
 
-    _onSubmit = () => {};
-
-    _instanceChange = (type, value) => {
-        console.log(type, value);
+    _deleteInstance = index => {
+        const { formControl } = this.state;
+        let clone = {...formControl};
+        const result = clone.instance.filter((x, i) => i !== index);
+        clone.instance = result;
+        this.setState({ formControl: clone });
     };
 
     render() {
@@ -140,7 +185,7 @@ export default class ModalTransaction extends PureComponent {
                     <label>Address</label>
                 </Row>
                 <Row>
-                    <label>-</label>
+                    <label>{formControl.address}</label>
                 </Row>
                 <Row>
                     <label>Status</label>
@@ -168,75 +213,92 @@ export default class ModalTransaction extends PureComponent {
                     formControl.instance.map((value, index) => (
                         <ListItem
                             key={index}
+                            index={index}
                             products={products}
                             instance={value}
                             onChange={this._instanceChange}
+                            deleteInstance={this._deleteInstance}
                             />
                     ))
                 }
                 <Row>
                     <Col md={1}></Col>
                     <Col md={23}>
-                        <Button type="primary">+Add new product</Button>
+                        <Button onClick={this._newInstance} type="primary">+Add new product</Button>
                     </Col>
                 </Row>
+                <Row className="total-row">
+                    <Col>
+                        <label>TOTAL</label>
+                    </Col>
+                    <Col>
+                        <label>Rp: </label>
+                    </Col>
+                </Row>
+                <hr/>
             </Modal>
         );
     }
-}
+};
 
-class ListItem extends PureComponent {
+class ListItem extends Component {
 
-    _onChange = (type, value) => {
-        this.props.onChange(type, value);
+    _onChange = (type, value, index) => {
+        this.props.onChange(type, value, index);
+    };
+
+    _deleteInstance = () => {
+        const { index } = this.props;
+        this.props.deleteInstance(index);
     };
 
     render() {
-        const { products, instance } = this.props;
+        const { products, instance, index } = this.props;
         return (
             <Row className="row-loop">
                 <Col md={1}>
-                    <label>1</label>
+                    <label>{index + 1}</label>
                 </Col>
                 <Col md={5}>
                     <Row>
                         <label>Product Name</label>
                     </Row>
                     <Row>
-                        <Select id="productName" onChange={(evt) => this._onChange("productName", evt)} value={instance.productName} className="select-product">
+                        <Select id="productName" onChange={(evt) => this._onChange("productName", evt, index)} value={instance.productName} className="select-product">
                             {
                                 products.map((value, index) => (
-                                    <Select.Option key={index} value={value.productName}> {value.productName} </Select.Option>
+                                    <Select.Option key={index} value={value.productName + "-" + value._id}> {value.productName} </Select.Option>
                                 ))
                             }
                         </Select>
                     </Row>
                 </Col>
                 <Col md={1} />
-                <Col md={2}>
+                <Col md={3}>
                     <Row>
                         <label>Qty</label>
                     </Row>
                     <Row>
-                        <Input value={instance.qty} onChange={(evt) => this._onChange("qty", evt)} maxLength={2} className="product-qty" />
+                        <InputNumber type="number" min={1} value={instance.qty} onChange={(evt) => this._onChange("qty", evt, index)} className="product-qty" />
+                        {/* <Input type="number" value={instance.qty} onChange={(evt) => this._onChange("qty", evt, index)} maxLength={2} className="product-qty" /> */}
                     </Row>
                 </Col>
                 <Col md={1} />
-                <Col md={5}>
+                <Col md={4}>
                     <Row>
                         <label>Price</label>
                     </Row>
                     <Row>
-                        <Input disabled defaultValue={`Rp ${instance.price.toLocaleString()}`} maxLength={2} className="product-qty" />
+                        <Input disabled value={`Rp ${instance.price.toLocaleString()}`} maxLength={2} className="product-qty" />
                     </Row>
                 </Col>
                 <Col md={1} />
-                <Col md={5}>
+                <Col md={4}>
                     <Row>
                         <label>Subtotal</label>
                     </Row>
                     <Row>
-                        <Input disabled defaultValue={`Rp ${( instance.price * instance.qty ).toLocaleString()}`} maxLength={2} className="product-qty" />
+                        <Input disabled value={`Rp ${instance.subtotal.toLocaleString()}`} maxLength={2} className="product-qty" />
                     </Row>
                 </Col>
                 <Col md={1} />
@@ -244,11 +306,21 @@ class ListItem extends PureComponent {
                     <Row>
                         <label>Action</label>
                     </Row>
-                    <Row>
-                        <Button style={{ margin: "5px 0" }} type="danger">
-                            Delete
-                        </Button>
-                    </Row>
+                    {
+                        index !== 0 &&
+                        <Row>
+                            <Popconfirm
+                                title="Are you sure want to delete this product?"
+                                icon={<Icon type="exclamation-circle" style={{ color: 'red' }} />}
+                                onConfirm={this._deleteInstance}
+                                okText="Yes"
+                                okType="danger"
+                                cancelText="No"
+                            >
+                                <Button style={{ margin: "5px 0" }} type="danger"> Delete </Button>
+                            </Popconfirm>
+                        </Row>
+                    }
                 </Col>
             </Row>
         );

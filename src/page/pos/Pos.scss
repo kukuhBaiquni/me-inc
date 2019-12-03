@@ -155,6 +155,19 @@ body {
             animation-name: fading;
             animation-duration: 0.5s;
         }
+        .total-row {
+            background-color: $primary;
+            margin-top: 50px;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 5px;
+            label {
+                color: white;
+                font-family: $bold;
+            }
+        }
         .row-loop {
             margin: 10px 0;
             animation-name: fading;
@@ -171,10 +184,6 @@ body {
                 width: 100%;
                 margin: 5px 0;
             }
-        }
-        .inliner {
-            display: flex;
-            justify-content: space-between;
         }
         color: $primary;
         font-size: 16px;

@@ -6,6 +6,7 @@ import moment from "moment";
 import ModalDetails from "./ModalDetails";
 import ModalTransaction from "./ModalTransaction";
 import { connect } from "react-redux";
+import { GET_CUSTOMER_REQUEST, GET_PRODUCT_REQUEST } from "../../constant/actionTypes";
 
 class Pos extends PureComponent {
     constructor(props) {
@@ -16,6 +17,42 @@ class Pos extends PureComponent {
             loading: false,
             details: null
         }
+    };
+
+    componentDidMount() {
+        const { customers, products } = this.props;
+        if(customers.data.length === 0) {
+            this._getCustomer();
+        }
+        if(products.data.length ===0) {
+            this._getProducts();
+        }
+    };
+
+    _getCustomer = () => {
+        const { dispatch } = this.props;
+        dispatch({
+            type: GET_CUSTOMER_REQUEST,
+            config: {
+                method: "get",
+                headers: {
+                    "Accept": "application/json;utf-8"
+                }
+            }
+        });
+    };
+
+    _getProducts = () => {
+        const { dispatch } = this.props;
+        dispatch({
+            type: GET_PRODUCT_REQUEST,
+            config: {
+                methhod: "get",
+                headers: {
+                    "Accept": "application/json;utf-8"
+                }
+            }
+        });
     };
 
     _closeDetailModal = () => this.setState({isModalDetailsVisible: false});

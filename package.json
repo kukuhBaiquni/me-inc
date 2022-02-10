@@ -9,7 +9,7 @@
     "dotenv": "^8.2.0",
     "moment": "^2.24.0",
     "nanoid": "^2.1.6",
-    "node-sass": "^4.13.0",
+    "node-sass": "^7.0.0",
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
     "react-highlight-words": "^0.16.0",
